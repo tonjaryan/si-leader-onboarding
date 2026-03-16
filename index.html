@@ -1,0 +1,2348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>New SI Leader Training</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #2C2218;
+  --bg2: #241A0F;
+  --bg3: #1A1710;
+  --surface: rgba(255,255,255,0.97);
+  --soft: #F4EFE4;
+  --lavender: #EDE0C8;
+  --surface-glass: rgba(255,255,255,0.12);
+  --surface-glass2: rgba(255,255,255,0.07);
+  --primary: #C1502A;
+  --primary2: #A03E1E;
+  --accent: #C48E2A;
+  --accent2: #E8DCBF;
+  --grad: #AE431E;
+  --grad2: #8A3518;
+  --grad-pill: #AE431E;
+  --text: #2C2016;
+  --text-mid: #6B3820;
+  --text-soft: #7A6A55;
+  --text-white: rgba(255,255,255,0.95);
+  --text-white-soft: rgba(255,255,255,0.65);
+  --border: rgba(90,60,30,0.18);
+  --border-light: rgba(255,255,255,0.18);
+  --shadow: 0 20px 60px rgba(42,74,85,0.22);
+  --shadow-sm: 0 4px 20px rgba(42,74,85,0.1);
+  --r: 20px;
+  --r-sm: 12px;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #FAF5EC;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Progress bar */
+#progress-track {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px;
+  background: rgba(255,255,255,0.1); z-index: 200;
+}
+#progress-fill {
+  height: 100%;
+  background: #AE431E;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 12px rgba(196,142,42,0.5);
+}
+
+/* Header */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 32px 14px;
+  background: #AE431E;
+  border-bottom: none;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.header-brand { display: flex; flex-direction: column; gap: 2px; }
+.header-brand h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.05rem; font-weight: 400;
+  color: #ffffff; letter-spacing: 0.2px;
+}
+.header-brand p { font-size: 0.75rem; color: rgba(255,255,255,0.8); font-weight: 300; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.step-indicator {
+  font-size: 0.75rem; font-weight: 500;
+  color: #ffffff;
+  background: rgba(255,255,255,0.15);
+  padding: 5px 14px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.35);
+}
+
+/* Nav dots */
+#nav-dots { display: flex; gap: 6px; align-items: center; }
+.ndot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: none; cursor: pointer;
+  transition: all 0.3s;
+}
+.ndot.active { background: #ffffff; width: 20px; border-radius: 4px; }
+.ndot.done { background: rgba(255,255,255,0.65); }
+
+/* Layout wrapper */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  padding-top: 58px;
+}
+
+/* Sidebar */
+#sidenav {
+  width: 220px;
+  flex-shrink: 0;
+  position: fixed;
+  top: 58px;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  background: #ffffff;
+  border-right: 1.5px solid rgba(174,67,30,0.12);
+  padding: 20px 0 40px;
+  z-index: 50;
+}
+#sidenav::-webkit-scrollbar { width: 4px; }
+#sidenav::-webkit-scrollbar-thumb { background: rgba(174,67,30,0.2); border-radius: 2px; }
+
+.nav-section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: #AE431E;
+  padding: 14px 18px 6px;
+  display: block;
+}
+.nav-section-label:first-child { padding-top: 6px; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 18px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.8rem;
+  color: #6B5F4A;
+  line-height: 1.35;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.nav-item:hover { background: #FAF5EC; color: #AE431E; }
+.nav-item.active {
+  background: #F5E6C8;
+  color: #AE431E;
+  font-weight: 600;
+  border-left-color: #AE431E;
+}
+.nav-item.done .nav-check { background: #8A8635; color: white; }
+.nav-check {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(174,67,30,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.55rem;
+  flex-shrink: 0;
+  color: transparent;
+  transition: all 0.2s;
+}
+.nav-item.active .nav-check {
+  border-color: #AE431E;
+  background: #AE431E;
+  color: white;
+}
+
+/* Main content area */
+main {
+  flex: 1;
+  margin-left: 220px;
+  width: calc(100% - 220px);
+  max-width: 100%;
+  padding: 24px 40px 80px;
+  min-width: 0;
+}
+
+/* Sidebar toggle for mobile */
+#nav-toggle {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: #AE431E;
+  color: #EAC891;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(174,67,30,0.3);
+}
+
+@media (max-width: 700px) {
+  #sidenav {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  #sidenav.open { transform: translateX(0); }
+  main { margin-left: 0; width: 100%; padding: 16px 14px 80px; }
+  #nav-toggle { display: flex; }
+  .app-layout { padding-top: 54px; }
+}
+
+/* Slide */
+.slide { display: none; }
+.slide.active {
+  display: block;
+  animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border-radius: var(--r);
+  padding: 32px 36px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: #D06224;
+}
+
+.glass-card {
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-light);
+  border-radius: var(--r);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+/* Section label */
+.section-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 1.2px;
+  text-transform: uppercase; color: #D06224;
+  margin-bottom: 20px;
+}
+.section-label::before {
+  content: ''; display: block;
+  width: 18px; height: 2px;
+  background: #EAC891; border-radius: 2px;
+}
+
+/* Welcome */
+.welcome-kicker {
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--primary);
+  margin-bottom: 10px;
+}
+.welcome-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; line-height: 1.15;
+  color: var(--text); margin-bottom: 14px;
+}
+.welcome-title em { font-style: italic; color: #D06224; }
+.welcome-body { font-size: 0.95rem; line-height: 1.7; color: var(--text-soft); margin-bottom: 28px; }
+
+.obj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.obj-chip {
+  background: #F5E6C8;
+  border: 1px solid rgba(193,80,42,0.12);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 0.83rem; color: var(--text-mid); font-weight: 500;
+  line-height: 1.4;
+}
+.obj-chip-num {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--primary);
+  opacity: 0.7; margin-bottom: 4px; display: block;
+}
+
+.info-strip {
+  background: #F5E6C8;
+  border-left: 3px solid var(--primary);
+  border-radius: 0 10px 10px 0;
+  padding: 12px 16px;
+  font-size: 0.83rem; color: var(--text-mid); line-height: 1.5;
+}
+.info-strip strong { color: var(--primary2); }
+
+/* Comparison table */
+.compare-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 16px; border-radius: 12px; overflow: hidden; }
+.compare-table th { background: var(--grad); color: white; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.3px; }
+.compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-soft); }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:nth-child(odd) td { background: rgba(193,80,42,0.03); }
+
+/* Section heading in card */
+.card-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; color: var(--text);
+  margin-bottom: 6px; line-height: 1.2;
+}
+.card-sub { font-size: 0.83rem; color: var(--text-soft); margin-bottom: 20px; }
+
+/* List */
+ul.feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+ul.feature-list li {
+  display: block;
+  padding-left: 18px;
+  position: relative;
+  font-size: 0.9rem; color: var(--text-soft); line-height: 1.6;
+}
+ul.feature-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+/* Quiz */
+.quiz-q { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 16px; line-height: 1.5; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer; background: white;
+  font-size: 0.9rem; color: var(--text-soft);
+  transition: all 0.2s; text-align: left;
+}
+.opt:hover:not(.locked) { border-color: var(--primary); background: #F4EFE4; color: var(--text-mid); }
+.opt-tag {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: #EDE0C8; color: var(--primary);
+  font-weight: 700; font-size: 0.78rem;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: all 0.2s;
+}
+.opt.correct { border-color: #059669; background: #ECFDF5; color: #065F46; }
+.opt.correct .opt-tag { background: #059669; color: white; }
+.opt.wrong { border-color: #DC2626; background: #FEF2F2; color: #991B1B; }
+.opt.wrong .opt-tag { background: #DC2626; color: white; }
+.opt.locked { cursor: default; }
+
+.feedback {
+  margin-top: 12px; padding: 13px 16px;
+  border-radius: var(--r-sm); font-size: 0.85rem; line-height: 1.55;
+  display: none;
+}
+.feedback.show { display: block; }
+.feedback.correct { background: #ECFDF5; border-left: 3px solid #059669; color: #065F46; }
+.feedback.wrong { background: #FEF2F2; border-left: 3px solid #DC2626; color: #991B1B; }
+hr.divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Technique accordion */
+.tech-card { border-radius: 14px; overflow: hidden; margin-bottom: 10px; border: 1.5px solid var(--border); }
+.tech-card-hd {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; cursor: pointer; user-select: none;
+}
+.tech-card-hd h3 { font-size: 0.95rem; font-weight: 600; color: white; }
+.tech-chev { color: white; transition: transform 0.3s; font-size: 0.85rem; }
+.tech-card.open .tech-chev { transform: rotate(180deg); }
+.tech-card-bd { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: white; }
+.tech-card.open .tech-card-bd { max-height: 500px; }
+.tech-card-inner { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.tech-detail-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-soft); margin-bottom: 4px; }
+.tech-detail-p { font-size: 0.88rem; line-height: 1.6; color: var(--text-soft); }
+.t1 .tech-card-hd { background: #AE431E; }
+.t2 .tech-card-hd { background: linear-gradient(90deg, #065F46, #059669); }
+.t3 .tech-card-hd { background: linear-gradient(90deg, #7C2D12, #EA580C); }
+
+/* Scenario */
+.scenario-card {
+  background: #F5E6C8;
+  border: 1px solid rgba(193,80,42,0.15);
+  border-radius: 14px; padding: 18px 20px; margin-bottom: 14px;
+}
+.scenario-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--primary); margin-bottom: 6px; }
+.scenario-text { font-size: 0.9rem; line-height: 1.6; color: var(--text-mid); }
+.sc-prompt { font-size: 0.83rem; color: var(--text-soft); margin-bottom: 10px; }
+.sc-opts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.sc-btn {
+  padding: 11px 8px; text-align: center;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  font-size: 0.8rem; font-weight: 500; color: var(--text-soft);
+  background: white; cursor: pointer; transition: all 0.2s;
+  line-height: 1.3;
+}
+.sc-btn:hover:not(.locked) { border-color: var(--primary); background: #F4EFE4; color: var(--primary); }
+.sc-btn.correct { border-color: #059669; background: #ECFDF5; color: #065F46; font-weight: 600; }
+.sc-btn.wrong { border-color: #DC2626; background: #FEF2F2; color: #991B1B; }
+.sc-btn.locked { cursor: default; }
+
+/* Reflection */
+.r-label { font-size: 0.82rem; font-weight: 600; color: var(--text-mid); margin-bottom: 6px; display: block; }
+.r-group { margin-bottom: 18px; }
+textarea {
+  width: 100%; border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); padding: 13px 14px;
+  font-size: 0.9rem; font-family: inherit; color: var(--text);
+  resize: vertical; min-height: 88px; background: white;
+  transition: border-color 0.2s;
+}
+textarea:focus { outline: none; border-color: var(--primary); }
+
+/* Checklist */
+.cl-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 14px 16px; border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); cursor: pointer;
+  background: white; transition: all 0.2s; margin-bottom: 8px;
+  user-select: none;
+}
+.cl-item.done { border-color: #059669; background: #ECFDF5; }
+.cl-box {
+  width: 22px; height: 22px; border-radius: 6px;
+  border: 2px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700; transition: all 0.2s;
+  margin-top: 1px;
+}
+.cl-item.done .cl-box { background: #059669; border-color: #059669; color: white; }
+.cl-title { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.cl-desc { font-size: 0.8rem; color: var(--text-soft); line-height: 1.45; }
+.cl-progress { text-align: right; font-size: 0.8rem; color: var(--text-soft); margin-top: 4px; }
+
+/* Stats grid */
+.stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 20px 0; }
+.stat-card {
+  background: #F5E6C8;
+  border-radius: 14px; padding: 18px 14px; text-align: center;
+}
+.stat-n { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--primary); }
+.stat-lbl { font-size: 0.75rem; color: var(--text-soft); font-weight: 500; margin-top: 2px; }
+
+/* Completion */
+.complete-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; color: var(--text); margin-bottom: 10px; line-height: 1.2;
+}
+.complete-sub { font-size: 0.95rem; color: var(--text-soft); line-height: 1.65; max-width: 480px; margin-bottom: 24px; }
+
+/* Buttons */
+.btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+.btn {
+  padding: 12px 28px; border-radius: 50px;
+  font-size: 0.9rem; font-weight: 600;
+  border: none; cursor: pointer; transition: all 0.25s;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.2px;
+}
+.btn-primary {
+  background: #AE431E;
+  color: white;
+  box-shadow: 0 6px 24px rgba(193,80,42,0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(193,80,42,0.4); }
+.btn-ghost {
+  background: transparent; color: #6B5F4A;
+  border: 1.5px solid rgba(174,67,30,0.25);
+}
+.btn-ghost:hover { background: #F5E6C8; color: #AE431E; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+.btn-outline {
+  background: white; color: var(--primary);
+  border: 1.5px solid rgba(193,80,42,0.25);
+}
+.btn-outline:hover { background: #F4EFE4; }
+
+@media (max-width: 600px) {
+  .obj-grid { grid-template-columns: 1fr; }
+  .sc-opts { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  header { padding: 14px 16px; }
+  main { padding: 90px 12px 60px; }
+  .card { padding: 24px 20px; }
+  .glass-card { padding: 22px 18px; }
+  .welcome-title { font-size: 1.7rem; }
+}
+/* Lesson plan builder */
+.lp-builder-meta{display:flex;flex-direction:column;gap:12px;margin-bottom:22px;padding:16px;background:var(--soft);border-radius:var(--r-sm);border:1.5px solid var(--border)}
+.builder-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.builder-label{font-size:0.78rem;font-weight:600;color:var(--text-mid);min-width:120px;flex-shrink:0}
+.builder-input{flex:1;min-width:200px;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-size:0.88rem;font-family:inherit;color:var(--text);background:white}
+.builder-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(193,80,42,0.1)}
+.subject-toggle,.dur-toggle{display:flex;gap:6px}
+.subj-btn,.dur-btn{padding:6px 16px;border-radius:50px;font-size:0.8rem;font-weight:500;border:1.5px solid var(--border);background:white;color:var(--text-soft);cursor:pointer;transition:all .2s;font-family:inherit}
+.subj-btn.active,.dur-btn.active{background:var(--primary);color:white;border-color:var(--primary)}
+.builder-section{margin-bottom:22px}
+.builder-section-hd{font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.builder-min-badge{font-size:0.7rem;font-weight:500;padding:2px 8px;background:var(--lavender);color:var(--primary);border-radius:50px}
+.builder-hint{font-size:0.8rem;color:var(--text-soft);line-height:1.55;margin-bottom:8px}
+.builder-ta{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-size:0.85rem;font-family:inherit;color:var(--text);background:white;resize:vertical;line-height:1.6}
+.builder-ta:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(193,80,42,0.1)}
+.builder-ta::placeholder{color:var(--text-soft);opacity:.7}
+.seq-block{border:1.5px solid var(--border);border-radius:var(--r-sm);overflow:hidden;margin-bottom:8px;background:white}
+.seq-header{display:grid;grid-template-columns:68px 1fr 80px;gap:0;background:var(--soft);border-bottom:1.5px solid var(--border)}
+.seq-num{padding:10px 12px;font-size:0.78rem;font-weight:600;color:var(--primary);display:flex;align-items:center}
+.seq-title-input{padding:10px 12px;border:none;border-right:1.5px solid var(--border);font-size:0.83rem;font-family:inherit;color:var(--text);background:transparent;outline:none}
+.seq-title-input:focus{background:white}
+.seq-time-input{padding:10px 10px;border:none;font-size:0.83rem;font-family:inherit;color:var(--text-soft);background:transparent;outline:none;text-align:center}
+.seq-time-input:focus{background:white}
+.seq-block .builder-ta{border:none;border-radius:0;padding:12px 14px}
+.trouble-card{border:1.5px solid var(--border);border-radius:var(--r-sm);overflow:hidden;margin-bottom:10px;background:white}
+.trouble-scenario{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--soft);border-bottom:1.5px solid var(--border)}
+.trouble-icon{width:28px;height:28px;border-radius:8px;background:var(--lavender);color:var(--primary);font-size:0.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.trouble-title{font-size:0.88rem;font-weight:600;color:var(--text);margin-bottom:2px}
+.trouble-sub{font-size:0.78rem;color:var(--text-soft);font-style:italic}
+.trouble-card .builder-ta{border:none;border-radius:0;padding:12px 14px}
+.builder-save-row{display:flex;justify-content:flex-end;align-items:center;margin-top:4px}
+.sch-select{width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-size:0.88rem;font-family:inherit;color:var(--text);background:white;cursor:pointer}
+.sch-select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(193,80,42,0.1)}
+.day-col{display:flex;flex-direction:column;gap:4px}
+.day-hd{font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--text-mid);text-align:center;padding:6px 4px;background:var(--lavender);border-radius:var(--r-sm)}
+.day-slots{display:flex;flex-direction:column;gap:4px;min-height:36px}
+.slot-item{display:flex;align-items:center;gap:3px;background:white;border:1.5px solid var(--border);border-radius:8px;overflow:hidden}
+.slot-input{flex:1;border:none;padding:5px 6px;font-size:0.75rem;font-family:inherit;color:var(--text);background:transparent;min-width:0;outline:none}
+.slot-del{border:none;background:none;cursor:pointer;color:var(--text-soft);padding:4px 5px;font-size:0.8rem;line-height:1;flex-shrink:0}
+.slot-del:hover{color:#DC2626}
+.add-slot-btn{font-size:0.72rem;font-weight:600;color:var(--primary);background:none;border:1.5px dashed rgba(193,80,42,0.25);border-radius:8px;padding:5px 4px;cursor:pointer;text-align:center;font-family:inherit;transition:all .2s}
+.add-slot-btn:hover{background:var(--lavender);border-style:solid}
+.lp-row{display:grid;grid-template-columns:52px 1fr 1fr;gap:0;margin-bottom:8px;border:1.5px solid var(--border);border-radius:var(--r-sm);overflow:hidden;background:white}
+.lp-time{padding:14px 8px;background:var(--soft);border-right:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:2px}
+.lp-min{font-size:1.1rem;font-weight:600;color:var(--text)}
+.lp-unit{font-size:0.68rem;color:var(--text-soft)}
+.lp-bar{width:3px;border-radius:2px;flex:1;margin-top:6px;max-height:50px;min-height:20px}
+.lp-body{padding:14px 16px;border-right:1.5px solid var(--border)}
+.lp-tag{font-size:0.68rem;font-weight:600;letter-spacing:.7px;text-transform:uppercase;padding:3px 8px;border-radius:var(--r-sm);display:inline-block;margin-bottom:6px}
+.lp-heading{font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:5px;line-height:1.3}
+.lp-text{font-size:0.82rem;color:var(--text-soft);line-height:1.6}
+.lp-reflect{padding:14px 14px}
+.lp-rlabel{font-size:0.68rem;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--text-soft);margin-bottom:6px}
+.lp-ta{width:100%;font-size:0.8rem;line-height:1.55;resize:vertical;min-height:80px;color:var(--text);background:var(--soft);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-family:inherit}
+.lp-ta:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(193,80,42,0.1)}
+.lp-ta::placeholder{color:var(--text-soft);opacity:.7}
+.wd-step{display:flex;gap:14px;padding-bottom:14px;border-bottom:1.5px solid var(--border);margin-bottom:4px}
+.wd-num{width:28px;height:28px;border-radius:50%;background:var(--primary);color:white;font-size:0.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.wd-content{flex:1}
+.wd-title{font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.3}
+.wd-body{font-size:0.83rem;color:var(--text-soft);line-height:1.6}
+.nav-doc {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 18px;
+  font-size: 0.8rem;
+  color: #6B5F4A;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.nav-doc:hover { background: #FAF5EC; color: #AE431E; border-left-color: #AE431E; }
+.nav-doc-icon {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #AE431E;
+  color: white;
+  font-size: 0.6rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+/* Slide 2 self-check */
+.sc2-opt:hover{background:#FAF5EC!important;border-color:#AE431E!important;color:#AE431E!important}
+.sc2-opt.opt-correct{background:#ECFDF5!important;border-color:#059669!important;color:#065F46!important;font-weight:500}
+.sc2-opt.opt-wrong{background:#FEF2F2!important;border-color:#DC2626!important;color:#991B1B!important}
+.sc2-opt.locked{cursor:default!important}
+/* Slide 4 technique match */
+.match-item{border:1.5px solid rgba(174,67,30,0.15);border-radius:12px;overflow:hidden;background:white;margin-bottom:0}
+.match-desc{font-size:0.85rem;color:#3D2B1A;line-height:1.55;padding:12px 14px;background:#FAF5EC;border-bottom:1.5px solid rgba(174,67,30,0.1);font-style:italic}
+.match-opts{display:flex;gap:6px;padding:10px 12px;flex-wrap:wrap}
+.match-btn{padding:6px 14px;border-radius:50px;border:1.5px solid rgba(174,67,30,0.2);background:white;font-size:0.78rem;font-weight:500;color:#6B5F4A;cursor:pointer;font-family:inherit;transition:all .2s}
+.match-btn:hover:not(.locked){border-color:#AE431E;background:#F5E6C8;color:#AE431E}
+.match-btn.m-correct{border-color:#059669;background:#ECFDF5;color:#065F46;font-weight:600}
+.match-btn.m-wrong{border-color:#DC2626;background:#FEF2F2;color:#991B1B}
+.match-btn.locked{cursor:default}
+.match-fb{font-size:0.8rem;padding:0 14px 10px;line-height:1.5;display:none}
+.match-fb.show{display:block}
+.match-fb.correct{color:#065F46}
+.match-fb.wrong{color:#991B1B}
+/* Slide 13 starter chips */
+.starter-chip{font-size:0.75rem;color:#6B2E10;background:#F5E6C8;border:1.5px solid rgba(174,67,30,0.2);border-radius:20px;padding:4px 11px;cursor:pointer;transition:all .2s;display:inline-block;line-height:1.4}
+.starter-chip:hover{background:#EAC891;border-color:#AE431E}
+.starter-chip.used{opacity:.4;cursor:default}
+/* Slide 15 completion checklist */
+.comp-check{display:flex;align-items:center;gap:10px;font-size:0.85rem;color:#6B5F4A;padding:6px 0}
+.comp-dot{width:18px;height:18px;border-radius:50%;border:2px solid rgba(174,67,30,0.25);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:transparent;transition:all .3s}
+.comp-check.done .comp-dot{background:#8A8635;border-color:#8A8635;color:white;content:"✓"}
+.comp-check.done .comp-dot::after{content:"✓";color:white;font-size:0.65rem}
+.comp-check.done{color:#1A1710;font-weight:500}
+.summ-block{border:1.5px solid rgba(174,67,30,0.15);border-radius:var(--r-sm);overflow:hidden}
+.summ-hd{background:#AE431E;color:#EAC891;font-size:0.78rem;font-weight:600;letter-spacing:.5px;padding:9px 14px}
+.summ-body{padding:14px;background:white}
+.summ-text{font-size:0.83rem;color:#6B5F4A;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+</style>
+</head>
+<body>
+
+<div id="progress-track"><div id="progress-fill" style="width:0%"></div></div>
+
+<header>
+  <div class="header-brand">
+    <h1>New SI Leader Training</h1>
+    <p>Spring 2025 — Sanger Learning Center, UT Austin</p>
+  </div>
+  <div class="header-right">
+    <div class="step-indicator" id="step-label">Introduction</div>
+    <div id="nav-dots"></div>
+  </div>
+</header>
+
+<div class="app-layout">
+
+<nav id="sidenav">
+  <span class="nav-section-label">Getting Started</span>
+  <button class="nav-item" onclick="goTo(0)" id="nav-0"><span class="nav-check">&#10003;</span>Introduction</button>
+  <button class="nav-item" onclick="goTo(1)" id="nav-1"><span class="nav-check">&#10003;</span>What is SI?</button>
+  <button class="nav-item" onclick="goTo(2)" id="nav-2"><span class="nav-check">&#10003;</span>SI vs. Passive Learning</button>
+  <button class="nav-item" onclick="goTo(3)" id="nav-3"><span class="nav-check">&#10003;</span>Knowledge Check</button>
+
+  <span class="nav-section-label">Core Techniques</span>
+  <button class="nav-item" onclick="goTo(4)" id="nav-4"><span class="nav-check">&#10003;</span>Facilitation Techniques</button>
+  <button class="nav-item" onclick="goTo(5)" id="nav-5"><span class="nav-check">&#10003;</span>Scenario Practice</button>
+  <button class="nav-item" onclick="goTo(6)" id="nav-6"><span class="nav-check">&#10003;</span>Reflection</button>
+
+  <span class="nav-section-label">Setup &amp; Planning</span>
+  <button class="nav-item" onclick="goTo(7)" id="nav-7"><span class="nav-check">&#10003;</span>Action Items</button>
+  <button class="nav-item" onclick="goTo(8)" id="nav-8"><span class="nav-check">&#10003;</span>Your Schedule</button>
+  <button class="nav-item" onclick="goTo(9)" id="nav-9"><span class="nav-check">&#10003;</span>Announcements</button>
+  <button class="nav-item" onclick="goTo(10)" id="nav-10"><span class="nav-check">&#10003;</span>Professor Email</button>
+  <button class="nav-item" onclick="goTo(11)" id="nav-11"><span class="nav-check">&#10003;</span>Your Summary</button>
+
+  <span class="nav-section-label">Lesson Plans</span>
+  <button class="nav-item" onclick="goTo(12)" id="nav-12"><span class="nav-check">&#10003;</span>Lesson Plan Example</button>
+  <button class="nav-item" onclick="goTo(13)" id="nav-13"><span class="nav-check">&#10003;</span>Build Your Lesson Plan</button>
+
+  <span class="nav-section-label">Finishing Up</span>
+  <button class="nav-item" onclick="goTo(14)" id="nav-14"><span class="nav-check">&#10003;</span>Log Your Hours</button>
+  <button class="nav-item" onclick="goTo(15)" id="nav-15"><span class="nav-check">&#10003;</span>Complete</button>
+
+  <span class="nav-section-label">Training Documents</span>
+  <a class="nav-item nav-doc" href="https://docs.google.com/document/d/1dgs9CmUU2Jbn29T4xsUP-02te1ZlN22x/edit?usp=drive_link&ouid=112350909650141876877&rtpof=true&sd=true" target="_blank">
+    <span class="nav-doc-icon">&#8595;</span>Learner Workbook
+  </a>
+  <a class="nav-item nav-doc" href="https://docs.google.com/document/d/1mRCx615Sa9ZxlIcWH0txGL5GNtNQUc0P/edit?usp=drive_link&ouid=112350909650141876877&rtpof=true&sd=true" target="_blank">
+    <span class="nav-doc-icon">&#8595;</span>Course Outline
+  </a>
+</nav>
+
+<button id="nav-toggle" onclick="document.getElementById('sidenav').classList.toggle('open')" title="Menu">&#9776;</button>
+
+<main>
+
+<!-- SLIDE 0: Welcome -->
+<div class="slide active" id="slide-0" data-title="Introduction">
+  <div class="card">
+    <div class="welcome-kicker">SI Leader Onboarding — Spring 2025</div>
+    <h2 class="welcome-title">Welcome to <em>Supplemental Instruction</em> Leadership</h2>
+    <p class="welcome-body">You've been selected to lead SI at UT Austin — one of the most high-impact peer-learning roles on campus. This module prepares you for your first day of training and your first session as an SI Leader.</p>
+    <div class="obj-grid">
+      <div class="obj-chip"><span class="obj-chip-num">01</span>Understand the purpose and principles of SI</div>
+      <div class="obj-chip"><span class="obj-chip-num">02</span>Distinguish SI from tutoring and other programs</div>
+      <div class="obj-chip"><span class="obj-chip-num">03</span>Learn 3 core facilitation techniques</div>
+      <div class="obj-chip"><span class="obj-chip-num">04</span>Practice and reflect on your facilitation</div>
+    </div>
+    <div class="info-strip"><strong>Estimated time:</strong> 20–30 minutes. Your reflection notes are saved locally so you can pause and return.</div>
+
+    <div style="margin-top:16px;border:1.5px solid rgba(174,67,30,0.18);border-radius:var(--r-sm);overflow:hidden">
+      <div style="background:#AE431E;padding:9px 16px">
+        <span style="font-size:0.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#EAC891">Training Documents</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+        <a href="https://docs.google.com/document/d/1dgs9CmUU2Jbn29T4xsUP-02te1ZlN22x/edit?usp=drive_link&ouid=112350909650141876877&rtpof=true&sd=true" target="_blank"
+          style="display:flex;align-items:center;gap:10px;padding:13px 16px;text-decoration:none;border-right:1.5px solid rgba(174,67,30,0.15);transition:background .15s;background:white"
+          onmouseover="this.style.background='#FAF5EC'" onmouseout="this.style.background='white'">
+          <div style="width:32px;height:32px;border-radius:8px;background:#F5E6C8;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0h7l5 5v11H2V0z" fill="#EAC891" stroke="#AE431E" stroke-width="1.5"/><path d="M9 0v5h5" stroke="#AE431E" stroke-width="1.5"/><path d="M4 8h6M4 11h4" stroke="#AE431E" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div style="font-size:0.82rem;font-weight:600;color:#1A1710">Learner Workbook</div>
+            <div style="font-size:0.72rem;color:#6B5F4A">Open in Google Docs</div>
+          </div>
+        </a>
+        <a href="https://docs.google.com/document/d/1mRCx615Sa9ZxlIcWH0txGL5GNtNQUc0P/edit?usp=drive_link&ouid=112350909650141876877&rtpof=true&sd=true" target="_blank"
+          style="display:flex;align-items:center;gap:10px;padding:13px 16px;text-decoration:none;transition:background .15s;background:white"
+          onmouseover="this.style.background='#FAF5EC'" onmouseout="this.style.background='white'">
+          <div style="width:32px;height:32px;border-radius:8px;background:#F5E6C8;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 0h7l5 5v11H2V0z" fill="#EAC891" stroke="#AE431E" stroke-width="1.5"/><path d="M9 0v5h5" stroke="#AE431E" stroke-width="1.5"/><path d="M4 8h6M4 11h6M4 5h2" stroke="#AE431E" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div style="font-size:0.82rem;font-weight:600;color:#1A1710">Course Outline</div>
+            <div style="font-size:0.72rem;color:#6B5F4A">Open in Google Docs</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row"><span></span><button class="btn btn-primary" onclick="goTo(1)">Get Started</button></div>
+</div>
+
+<!-- SLIDE 1: What is SI -->
+<div class="slide" id="slide-1" data-title="What is SI?">
+  <div class="card">
+    <div class="section-label">Section 1 — Understanding SI</div>
+    <h3 class="card-heading">What is Supplemental Instruction?</h3>
+    <p class="card-sub">Build your foundation before training day</p>
+    <p style="font-size:0.92rem; line-height:1.7; color:var(--text-soft); margin-bottom:18px;">SI is a peer-assisted academic support program that targets historically difficult courses — not struggling students. As an SI Leader, you attended or are currently enrolled in the same course, so you understand the material and the challenges firsthand.</p>
+    <ul class="feature-list">
+      <li>SI sessions are <strong style="color:var(--text-mid)">collaborative</strong> — you guide students to learn from each other, not lecture at them.</li>
+      <li>SI is <strong style="color:var(--text-mid)">proactive</strong> — all students are welcome, not just those falling behind.</li>
+      <li>Unlike tutoring, SI Leaders are <strong style="color:var(--text-mid)">facilitators</strong>, not answer-givers.</li>
+      <li>Being an SI Leader develops your own leadership, communication, and mastery of the subject.</li>
+    </ul>
+    <div style="margin-top:22px; background:#F4EFE4; border-radius:14px; padding:18px 20px;">
+      <div style="font-size:0.78rem; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--primary); margin-bottom:12px;">SI vs. Tutoring</div>
+      <table class="compare-table">
+        <tr><th>Aspect</th><th>SI</th><th>Tutoring</th></tr>
+        <tr><td>Leader role</td><td>Facilitator</td><td>Expert / Instructor</td></tr>
+        <tr><td>Who attends?</td><td>All students</td><td>Students seeking help</td></tr>
+        <tr><td>Learning style</td><td>Collaborative / peer</td><td>One-on-one instruction</td></tr>
+        <tr><td>Schedule</td><td>Regular weekly sessions</td><td>On-demand / scheduled</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(0)">Back</button><button class="btn btn-primary" onclick="goTo(2)">Next: SI vs. Passive Learning</button></div>
+</div>
+
+<!-- SLIDE 2: SI vs Passive Learning -->
+<div class="slide" id="slide-2" data-title="SI vs. Passive Learning">
+  <div class="card">
+    <div class="section-label">Section 1 — The SI Philosophy</div>
+    <h3 class="card-heading">SI is not passive learning</h3>
+    <p class="card-sub">Understanding what makes SI fundamentally different</p>
+
+    <p style="font-size:0.92rem;line-height:1.7;color:var(--text-soft);margin-bottom:20px;">Many students arrive at SI expecting a tutor to walk them through answers. A large part of your role is actively resisting that dynamic. The goal is for students to discover, reason through, and confirm knowledge <em style="color:var(--text-mid)">on their own and with each other</em> — not to receive it from you.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px">
+      <div style="background:#FEF2F2;border-radius:14px;padding:16px 18px;border:1.5px solid rgba(220,38,38,0.12)">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#991B1B;margin-bottom:10px">Passive learning (what SI is not)</div>
+        <ul class="feature-list" style="gap:8px">
+          <li style="font-size:0.85rem">Students sit and listen while a leader explains content</li>
+          <li style="font-size:0.85rem">The leader is the authority — students wait to be told</li>
+          <li style="font-size:0.85rem">Learning depends on the quality of the person at the front</li>
+          <li style="font-size:0.85rem">Students leave relying on someone outside themselves</li>
+        </ul>
+      </div>
+      <div style="background:#ECFDF5;border-radius:14px;padding:16px 18px;border:1.5px solid rgba(5,150,105,0.15)">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#065F46;margin-bottom:10px">SI (active, peer-driven learning)</div>
+        <ul class="feature-list" style="gap:8px">
+          <li style="font-size:0.85rem">Students work through problems collaboratively — you facilitate</li>
+          <li style="font-size:0.85rem">The group is the resource — peers teach each other</li>
+          <li style="font-size:0.85rem">Learning depends on the quality of the group's thinking</li>
+          <li style="font-size:0.85rem">Students leave trusting their own ability to find answers</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background:var(--lavender);border-radius:14px;padding:18px 20px;margin-bottom:18px">
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--primary);margin-bottom:8px">The outcome that matters</div>
+      <p style="font-size:0.95rem;font-weight:500;color:var(--text-mid);line-height:1.65">Students who regularly attend SI sessions average <span style="color:var(--primary);font-size:1.1rem;font-weight:700">one full letter grade higher</span> than those who do not — not because the SI leader taught them more, but because they learned how to learn with each other.</p>
+    </div>
+
+    <div style="background:var(--soft);border-radius:14px;padding:16px 20px">
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--primary);margin-bottom:10px">What this means for you as an SI leader</div>
+      <ul class="feature-list">
+        <li style="font-size:0.88rem">Your job is to design situations where students must think, not situations where you explain</li>
+        <li style="font-size:0.88rem">Resist the urge to confirm answers immediately — let the group wrestle with uncertainty first</li>
+        <li style="font-size:0.88rem">When a student says "I don't know," your response is "Who in the room has a thought on that?" — not the answer</li>
+        <li style="font-size:0.88rem">The measure of a great SI session is how much the <em style="color:var(--text-mid)">students</em> talked, not how much you did</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="padding:22px 28px 24px;margin-top:0">
+    <div style="font-size:0.78rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#AE431E;margin-bottom:14px">Quick self-check — which of these describes SI?</div>
+    <div style="display:flex;flex-direction:column;gap:8px" id="s2q">
+      <button class="sc2-opt" onclick="checkS2(this,false)" style="text-align:left;padding:11px 14px;border:1.5px solid rgba(174,67,30,0.18);border-radius:10px;background:white;font-size:0.87rem;color:#6B5F4A;cursor:pointer;font-family:inherit;transition:all .2s">The SI leader explains the lesson while students take notes</button>
+      <button class="sc2-opt" onclick="checkS2(this,false)" style="text-align:left;padding:11px 14px;border:1.5px solid rgba(174,67,30,0.18);border-radius:10px;background:white;font-size:0.87rem;color:#6B5F4A;cursor:pointer;font-family:inherit;transition:all .2s">Only students who are struggling attend SI sessions</button>
+      <button class="sc2-opt" onclick="checkS2(this,true)" style="text-align:left;padding:11px 14px;border:1.5px solid rgba(174,67,30,0.18);border-radius:10px;background:white;font-size:0.87rem;color:#6B5F4A;cursor:pointer;font-family:inherit;transition:all .2s">Students work collaboratively to find answers, with the SI leader as a guide</button>
+      <button class="sc2-opt" onclick="checkS2(this,false)" style="text-align:left;padding:11px 14px;border:1.5px solid rgba(174,67,30,0.18);border-radius:10px;background:white;font-size:0.87rem;color:#6B5F4A;cursor:pointer;font-family:inherit;transition:all .2s">The SI leader reviews homework and corrects student mistakes directly</button>
+    </div>
+    <div id="s2-fb" style="margin-top:12px;padding:11px 14px;border-radius:10px;font-size:0.85rem;line-height:1.55;display:none"></div>
+  </div>
+
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(1)">Back</button><button class="btn btn-primary" id="s2-next" onclick="goTo(3)" disabled>Next: Knowledge Check</button></div>
+</div>
+
+<!-- SLIDE 2: Knowledge Check -->
+<div class="slide" id="slide-3" data-title="Knowledge Check">
+  <div class="card">
+    <div class="section-label">Section 1 — Knowledge Check</div>
+    <h3 class="card-heading">Check Your Understanding</h3>
+    <p class="card-sub">Select the best answer for each question</p>
+
+    <p class="quiz-q">1. Which statement best describes the target audience for SI sessions?</p>
+    <div class="opts" id="q1">
+      <button class="opt" onclick="checkQ('q1',this,false)"><span class="opt-tag">A</span>Only students who are failing or at risk of failing the course</button>
+      <button class="opt" onclick="checkQ('q1',this,true)"><span class="opt-tag">B</span>All students enrolled in the targeted course</button>
+      <button class="opt" onclick="checkQ('q1',this,false)"><span class="opt-tag">C</span>Students who specifically request a tutor</button>
+      <button class="opt" onclick="checkQ('q1',this,false)"><span class="opt-tag">D</span>First-generation college students only</button>
+    </div>
+    <div class="feedback" id="q1-fb"></div>
+
+    <hr class="divider">
+
+    <p class="quiz-q">2. A student asks you a content question during an SI session. What is the best response?</p>
+    <div class="opts" id="q2">
+      <button class="opt" onclick="checkQ('q2',this,false)"><span class="opt-tag">A</span>Provide the correct answer immediately so the group can move on</button>
+      <button class="opt" onclick="checkQ('q2',this,true)"><span class="opt-tag">B</span>Redirect the question to the group to encourage peer learning</button>
+      <button class="opt" onclick="checkQ('q2',this,false)"><span class="opt-tag">C</span>Tell the student to email the professor</button>
+      <button class="opt" onclick="checkQ('q2',this,false)"><span class="opt-tag">D</span>Skip the question and continue the activity</button>
+    </div>
+    <div class="feedback" id="q2-fb"></div>
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(2)">Back</button><button class="btn btn-primary" id="btn2" onclick="goTo(4)" disabled>Next: Facilitation Techniques</button></div>
+</div>
+
+<!-- SLIDE 3: Techniques -->
+<div class="slide" id="slide-4" data-title="Facilitation Techniques">
+  <div class="card">
+    <div class="section-label">Section 2 — Core Facilitation</div>
+    <h3 class="card-heading">The 3 Core Facilitation Techniques</h3>
+    <p class="card-sub">Select each technique to expand details</p>
+
+    <div class="tech-card t1" id="tc1">
+      <div class="tech-card-hd" onclick="toggleTech('tc1')">
+        <h3>01 — Wait Time (Think-Pair-Share)</h3>
+        <span class="tech-chev">▼</span>
+      </div>
+      <div class="tech-card-bd"><div class="tech-card-inner">
+        <div><div class="tech-detail-label">What it is</div><p class="tech-detail-p">After asking a question, pause deliberately for 5–10 seconds before calling on anyone. In Think-Pair-Share, students think alone, then discuss with a partner, then share with the group.</p></div>
+        <div><div class="tech-detail-label">Why it matters</div><p class="tech-detail-p">It equalizes participation, gives introverts time to formulate answers, and dramatically improves response quality. Most instructors wait less than 1 second — a brief pause changes everything.</p></div>
+        <div><div class="tech-detail-label">Common challenge</div><p class="tech-detail-p">The silence feels uncomfortable. You'll want to fill it. Resist the urge.</p></div>
+        <div><div class="tech-detail-label">When to pivot</div><p class="tech-detail-p">If no one responds after a full wait, rephrase the question or offer a scaffold, then redirect again.</p></div>
+      </div></div>
+    </div>
+
+    <div class="tech-card t2" id="tc2">
+      <div class="tech-card-hd" onclick="toggleTech('tc2')">
+        <h3>02 — Redirecting Questions</h3>
+        <span class="tech-chev">▼</span>
+      </div>
+      <div class="tech-card-bd"><div class="tech-card-inner">
+        <div><div class="tech-detail-label">What it is</div><p class="tech-detail-p">When a student asks you a question, bounce it back to the group: "That's a great question — what does everyone else think?" or "Who can help answer that?"</p></div>
+        <div><div class="tech-detail-label">Why it matters</div><p class="tech-detail-p">It keeps the session student-centered. Students learn more when they arrive at answers themselves. It builds group cohesion and reduces dependence on the SI Leader as the answer source.</p></div>
+        <div><div class="tech-detail-label">Common challenge</div><p class="tech-detail-p">Students expect you to just tell them. Some may be frustrated at first — that's okay. Stay consistent.</p></div>
+        <div><div class="tech-detail-label">When to pivot</div><p class="tech-detail-p">If the question involves a factual error or logistics that genuinely require a direct answer from you, give it concisely, then return to facilitation mode.</p></div>
+      </div></div>
+    </div>
+
+    <div class="tech-card t3" id="tc3">
+      <div class="tech-card-hd" onclick="toggleTech('tc3')">
+        <h3>03 — Check for Understanding (Clusters)</h3>
+        <span class="tech-chev">▼</span>
+      </div>
+      <div class="tech-card-bd"><div class="tech-card-inner">
+        <div><div class="tech-detail-label">What it is</div><p class="tech-detail-p">Regularly verify that the group truly understands before moving on. Use targeted questions, quick polls, clusters (small-group checks), or exit tickets.</p></div>
+        <div><div class="tech-detail-label">Why it matters</div><p class="tech-detail-p">Students often think they understand until asked to explain or apply a concept. Real-time checks reveal hidden gaps and let you adjust the session on the fly.</p></div>
+        <div><div class="tech-detail-label">Common challenge</div><p class="tech-detail-p">Students nod and say "yes" even when confused. Use open-ended checks — "Can you explain that in your own words?" — not yes/no questions.</p></div>
+        <div><div class="tech-detail-label">When to pivot</div><p class="tech-detail-p">If time is short, condense checks to one targeted question rather than skipping them entirely.</p></div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:22px 28px 24px;margin-top:0">
+    <div style="font-size:0.78rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#AE431E;margin-bottom:6px">Match the technique</div>
+    <p style="font-size:0.82rem;color:#6B5F4A;margin-bottom:14px">Drag or select — which technique does each description belong to?</p>
+    <div style="display:flex;flex-direction:column;gap:10px" id="match-container">
+      <div class="match-item" id="mi0">
+        <div class="match-desc">&ldquo;Before we move on — can someone explain that in their own words?&rdquo;</div>
+        <div class="match-opts">
+          <button class="match-btn" onclick="checkMatch(0,this,'wait')">Wait Time</button>
+          <button class="match-btn" onclick="checkMatch(0,this,'redirect')">Redirect</button>
+          <button class="match-btn" onclick="checkMatch(0,this,'check')">Check for Understanding</button>
+        </div>
+        <div class="match-fb" id="mfb0"></div>
+      </div>
+      <div class="match-item" id="mi1">
+        <div class="match-desc">&ldquo;Great question — what does the rest of the group think about that?&rdquo;</div>
+        <div class="match-opts">
+          <button class="match-btn" onclick="checkMatch(1,this,'wait')">Wait Time</button>
+          <button class="match-btn" onclick="checkMatch(1,this,'redirect')">Redirect</button>
+          <button class="match-btn" onclick="checkMatch(1,this,'check')">Check for Understanding</button>
+        </div>
+        <div class="match-fb" id="mfb1"></div>
+      </div>
+      <div class="match-item" id="mi2">
+        <div class="match-desc">You ask a question and count silently to seven before anyone speaks — then a student answers.</div>
+        <div class="match-opts">
+          <button class="match-btn" onclick="checkMatch(2,this,'wait')">Wait Time</button>
+          <button class="match-btn" onclick="checkMatch(2,this,'redirect')">Redirect</button>
+          <button class="match-btn" onclick="checkMatch(2,this,'check')">Check for Understanding</button>
+        </div>
+        <div class="match-fb" id="mfb2"></div>
+      </div>
+      <div class="match-item" id="mi3">
+        <div class="match-desc">&ldquo;Give me a thumbs up if you feel confident about this concept, thumbs sideways if you're still unsure.&rdquo;</div>
+        <div class="match-opts">
+          <button class="match-btn" onclick="checkMatch(3,this,'wait')">Wait Time</button>
+          <button class="match-btn" onclick="checkMatch(3,this,'redirect')">Redirect</button>
+          <button class="match-btn" onclick="checkMatch(3,this,'check')">Check for Understanding</button>
+        </div>
+        <div class="match-fb" id="mfb3"></div>
+      </div>
+    </div>
+    <div id="match-score" style="text-align:right;font-size:0.8rem;color:#6B5F4A;margin-top:12px">0 of 4 matched</div>
+  </div>
+
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(3)">Back</button><button class="btn btn-primary" onclick="goTo(5)">Next: Apply It</button></div>
+</div>
+
+<!-- SLIDE 4: Scenarios -->
+<div class="slide" id="slide-5" data-title="Scenario Practice">
+  <div class="card">
+    <div class="section-label">Section 2 &mdash; Apply the Techniques</div>
+    <h3 class="card-heading">Scenario practice</h3>
+    <p class="card-sub">Six scenarios &mdash; identify the best technique for each situation.</p>
+
+    <div style="background:#FBF4E0;border-left:3px solid #C48E2A;padding:12px 16px;margin-bottom:20px;border-radius:0">
+      <p style="font-size:0.83rem;color:#6B4A10;line-height:1.6"><strong>Remember &mdash; Wait Time has a next step:</strong> Hold silence for at least 5 seconds after asking a question. If nobody responds at all, don&rsquo;t give up on the group &mdash; rephrase the question in simpler language, or break it into smaller pieces and ask the first piece. The goal is still to get the group thinking, not to answer for them.</p>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scenario-label">Scenario 01</div>
+      <p class="scenario-text">You ask the group a complex question about cell membrane transport. Everyone goes quiet and looks down. Eight seconds pass. You feel the urge to jump in and explain.</p>
+    </div>
+    <p class="sc-prompt">Which technique should you use?</p>
+    <div class="sc-opts" id="sc1">
+      <button class="sc-btn" onclick="checkSc('sc1',this,'wait')">Wait Time</button>
+      <button class="sc-btn" onclick="checkSc('sc1',this,'redirect')">Redirect</button>
+      <button class="sc-btn" onclick="checkSc('sc1',this,'check')">Check for Understanding</button>
+    </div>
+    <div class="feedback" id="sc1-fb"></div>
+    <hr class="divider">
+
+    <div class="scenario-card">
+      <div class="scenario-label">Scenario 02</div>
+      <p class="scenario-text">You ask &ldquo;What happens when a cell is placed in a hypotonic solution?&rdquo; and hold silence &mdash; but after 10 full seconds, not a single student responds. The room is frozen.</p>
+    </div>
+    <p class="sc-prompt">What should you do next?</p>
+    <div class="sc-opts" id="sc2">
+      <button class="sc-btn" onclick="checkSc('sc2',this,'answer')">Give the answer yourself</button>
+      <button class="sc-btn" onclick="checkSc('sc2',this,'rephrase')">Rephrase or break into smaller questions</button>
+      <button class="sc-btn" onclick="checkSc('sc2',this,'move')">Move on to the next topic</button>
+    </div>
+    <div class="feedback" id="sc2-fb"></div>
+    <hr class="divider">
+
+    <div class="scenario-card">
+      <div class="scenario-label">Scenario 03</div>
+      <p class="scenario-text">A student raises their hand and asks, &ldquo;Can you just walk us through the steps for solving a limiting reagent problem? I always get confused.&rdquo; Two others nod.</p>
+    </div>
+    <p class="sc-prompt">Which technique should you use?</p>
+    <div class="sc-opts" id="sc3">
+      <button class="sc-btn" onclick="checkSc('sc3',this,'wait')">Wait Time</button>
+      <button class="sc-btn" onclick="checkSc('sc3',this,'redirect')">Redirect</button>
+      <button class="sc-btn" onclick="checkSc('sc3',this,'check')">Check for Understanding</button>
+    </div>
+    <div class="feedback" id="sc3-fb"></div>
+    <hr class="divider">
+
+    <div class="scenario-card">
+      <div class="scenario-label">Scenario 04</div>
+      <p class="scenario-text">Your group just finished working through a genetics problem together. Before moving to the next one, you want to be sure they actually understood &mdash; not just copied what the fastest student wrote.</p>
+    </div>
+    <p class="sc-prompt">Which technique should you use?</p>
+    <div class="sc-opts" id="sc4">
+      <button class="sc-btn" onclick="checkSc('sc4',this,'wait')">Wait Time</button>
+      <button class="sc-btn" onclick="checkSc('sc4',this,'redirect')">Redirect</button>
+      <button class="sc-btn" onclick="checkSc('sc4',this,'check')">Check for Understanding</button>
+    </div>
+    <div class="feedback" id="sc4-fb"></div>
+    <hr class="divider">
+
+    <div class="scenario-card">
+      <div class="scenario-label">Scenario 05</div>
+      <p class="scenario-text">One student asks you, &ldquo;Is it true that action potentials can travel in both directions?&rdquo; You&rsquo;re not 100% certain of the answer, and other students lean in waiting for you to respond.</p>
+    </div>
+    <p class="sc-prompt">Which technique should you use?</p>
+    <div class="sc-opts" id="sc5">
+      <button class="sc-btn" onclick="checkSc('sc5',this,'wait')">Wait Time</button>
+      <button class="sc-btn" onclick="checkSc('sc5',this,'redirect')">Redirect</button>
+      <button class="sc-btn" onclick="checkSc('sc5',this,'check')">Check for Understanding</button>
+    </div>
+    <div class="feedback" id="sc5-fb"></div>
+    <hr class="divider">
+
+    <div class="scenario-card">
+      <div class="scenario-label">Scenario 06</div>
+      <p class="scenario-text">You just finished explaining directions for a group activity. Students look uncertain. You want to make sure they understand what to do before they break into groups.</p>
+    </div>
+    <p class="sc-prompt">Which technique should you use?</p>
+    <div class="sc-opts" id="sc6">
+      <button class="sc-btn" onclick="checkSc('sc6',this,'wait')">Wait Time</button>
+      <button class="sc-btn" onclick="checkSc('sc6',this,'redirect')">Redirect</button>
+      <button class="sc-btn" onclick="checkSc('sc6',this,'check')">Check for Understanding</button>
+    </div>
+    <div class="feedback" id="sc6-fb"></div>
+
+    <div id="sc-progress" style="text-align:right;font-size:0.8rem;color:var(--text-soft);margin-top:16px">0 of 6 answered</div>
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(4)">Back</button><button class="btn btn-primary" id="btn4" onclick="goTo(6)" disabled>Next: Reflection</button></div>
+</div>
+
+<!-- SLIDE 5: Reflection -->
+<div class="slide" id="slide-6" data-title="Reflection">
+  <div class="card">
+    <div class="section-label">Section 3 — Reflection</div>
+    <h3 class="card-heading">Facilitation Reflection</h3>
+    <p class="card-sub">These are for your own growth. There are no wrong answers.</p>
+    <div class="r-group">
+      <label class="r-label">Which facilitation technique felt most natural to you? Why?</label>
+      <textarea id="r1" placeholder="Write your reflection here..." oninput="saveR()"></textarea>
+    </div>
+    <div class="r-group">
+      <label class="r-label">Which technique will be most challenging? What is one strategy to improve at it?</label>
+      <textarea id="r2" placeholder="Write your reflection here..." oninput="saveR()"></textarea>
+    </div>
+    <div class="r-group">
+      <label class="r-label">What is one thing you want to do differently in your very first SI session?</label>
+      <textarea id="r3" placeholder="Write your reflection here..." oninput="saveR()"></textarea>
+    </div>
+    <div style="text-align:right;font-size:0.78rem;color:#8A8635;opacity:0;transition:opacity .4s;margin-top:4px" id="r-saved">Reflections saved</div>
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(5)">Back</button><button class="btn btn-primary" onclick="goTo(7)">Next: Action Items</button></div>
+</div>
+
+<!-- SLIDE 6: Action Items -->
+<div class="slide" id="slide-7" data-title="Action Items">
+  <div class="card">
+    <div class="section-label">Section 4 — Before Your First Session</div>
+    <h3 class="card-heading">Action Items Checklist</h3>
+    <p class="card-sub">Check off each item as you complete it</p>
+
+    <div class="cl-item" onclick="toggleCl(this)">
+      <div class="cl-box"></div>
+      <div><div class="cl-title">Check your email regularly</div><div class="cl-desc">Respond to all coordinator communications. If you have not received any emails, notify your coordinator today.</div></div>
+    </div>
+    <div class="cl-item" onclick="toggleCl(this)">
+      <div class="cl-box"></div>
+      <div><div class="cl-title">Add your icon photo to Canvas</div><div class="cl-desc">Personalizes your SI presence for students. Complete by next week.</div></div>
+    </div>
+    <div class="cl-item" onclick="toggleCl(this)">
+      <div class="cl-box"></div>
+      <div><div class="cl-title">Send your first Canvas announcement</div><div class="cl-desc">Include a welcome message, a quick intro about yourself, and where and when your sessions will be held.</div></div>
+    </div>
+    <div class="cl-item" onclick="toggleCl(this)">
+      <div class="cl-box"></div>
+      <div><div class="cl-title">Post announcement at least 48 hours early</div><div class="cl-desc">Sunday or Monday is ideal. Thursday through Saturday is too late.</div></div>
+    </div>
+    <div class="cl-item" onclick="toggleCl(this)">
+      <div class="cl-box"></div>
+      <div><div class="cl-title">Add session times to the Canvas calendar widget</div><div class="cl-desc">Students rely on this to find your sessions.</div></div>
+    </div>
+    <div class="cl-item" onclick="toggleCl(this)">
+      <div class="cl-box"></div>
+      <div><div class="cl-title">Direct all questions to your own supervisor first</div><div class="cl-desc">Do not contact a different coordinator. If you have a conflict with a training email, tell your supervisor — not the sender — unless they are your coordinator.</div></div>
+    </div>
+    <div class="cl-progress" id="cl-pct">0 of 6 completed</div>
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(6)">Back</button><button class="btn btn-primary" onclick="goTo(8)">Next: Your Schedule</button></div>
+</div>
+
+<!-- SLIDE 8: Schedule Builder -->
+<div class="slide" id="slide-8" data-title="Your Schedule">
+  <div class="card" style="padding:28px 32px 32px">
+    <div class="section-label">Section 4 — Scheduling</div>
+    <h3 class="card-heading">Plan your sessions and deadlines</h3>
+    <p class="card-sub">Your supervisor will set specific due dates — build your schedule around them now.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px">
+      <div style="background:#FBF0E0;border-radius:14px;padding:15px 16px;border:1.5px solid rgba(193,80,42,0.12)">
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--primary);margin-bottom:6px">Lesson plan submissions</div>
+        <p style="font-size:0.85rem;color:var(--text-mid);line-height:1.6">Your supervisor will designate a weekly deadline for lesson plans so they can review and leave written feedback before your session. Enter that day below.</p>
+      </div>
+      <div style="background:#E1F5EE;border-radius:14px;padding:15px 16px;border:1.5px solid rgba(5,150,105,0.15)">
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#065F46;margin-bottom:6px">Weekly cohort meeting</div>
+        <p style="font-size:0.85rem;color:#065F46;line-height:1.6">All SI leaders attend a mandatory weekly cohort meeting. Enter your cohort meeting day and time below — this is a non-negotiable commitment.</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px">
+      <div>
+        <label class="lp-rlabel" style="display:block;margin-bottom:6px">LP submission deadline (day)</label>
+        <select id="sch-lpday" class="sch-select" onchange="saveSchedule()">
+          <option value="">Select day...</option>
+          <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option>
+        </select>
+      </div>
+      <div>
+        <label class="lp-rlabel" style="display:block;margin-bottom:6px">Cohort meeting (day + time)</label>
+        <input type="text" id="sch-cohort" class="builder-input" style="width:100%" placeholder="e.g. Thursdays 3:00–4:00 PM" oninput="saveSchedule()"/>
+      </div>
+    </div>
+
+    <div style="border-top:1.5px solid var(--border);padding-top:20px;margin-bottom:18px">
+      <h4 style="font-size:0.95rem;font-weight:600;color:var(--text);margin-bottom:6px">Enter your weekly class schedule</h4>
+      <p style="font-size:0.83rem;color:var(--text-soft);line-height:1.55;margin-bottom:16px">Fill in the days and times you are already committed to class, work, or other fixed obligations. This will help you identify open windows for your two SI sessions.</p>
+
+      <div id="sched-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px">
+        <div class="day-col" data-day="Mon">
+          <div class="day-hd">Mon</div>
+          <div class="day-slots" id="slots-Mon"></div>
+          <button class="add-slot-btn" onclick="addSlot('Mon')">+ Add</button>
+        </div>
+        <div class="day-col" data-day="Tue">
+          <div class="day-hd">Tue</div>
+          <div class="day-slots" id="slots-Tue"></div>
+          <button class="add-slot-btn" onclick="addSlot('Tue')">+ Add</button>
+        </div>
+        <div class="day-col" data-day="Wed">
+          <div class="day-hd">Wed</div>
+          <div class="day-slots" id="slots-Wed"></div>
+          <button class="add-slot-btn" onclick="addSlot('Wed')">+ Add</button>
+        </div>
+        <div class="day-col" data-day="Thu">
+          <div class="day-hd">Thu</div>
+          <div class="day-slots" id="slots-Thu"></div>
+          <button class="add-slot-btn" onclick="addSlot('Thu')">+ Add</button>
+        </div>
+        <div class="day-col" data-day="Fri">
+          <div class="day-hd">Fri</div>
+          <div class="day-slots" id="slots-Fri"></div>
+          <button class="add-slot-btn" onclick="addSlot('Fri')">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="border-top:1.5px solid var(--border);padding-top:20px;margin-bottom:18px">
+      <h4 style="font-size:0.95rem;font-weight:600;color:var(--text);margin-bottom:6px">Choose your two SI session days and times</h4>
+      <div style="background:#FBF4E0;border-left:3px solid #C48E2A;padding:11px 14px;margin-bottom:14px;border-radius:0">
+        <p style="font-size:0.82rem;color:#6B4A10;line-height:1.6"><strong>Important:</strong> We strongly recommend against scheduling both sessions on the same pairing — M/W or T/Th. Students whose schedule conflicts with Monday will also conflict with Wednesday because they mirror each other. Spread your sessions across different day pairings so students have a real alternate option.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:6px">Session 1 — day</label>
+          <select id="si-day1" class="sch-select" onchange="checkConflict();saveSchedule()">
+            <option value="">Select...</option>
+            <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option>
+          </select>
+        </div>
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:6px">Session 1 — time</label>
+          <input type="text" id="si-time1" class="builder-input" style="width:100%" placeholder="e.g. 2:00–2:50 PM" oninput="saveSchedule()"/>
+        </div>
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:6px">Session 2 — day</label>
+          <select id="si-day2" class="sch-select" onchange="checkConflict();saveSchedule()">
+            <option value="">Select...</option>
+            <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option>
+          </select>
+        </div>
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:6px">Session 2 — time</label>
+          <input type="text" id="si-time2" class="builder-input" style="width:100%" placeholder="e.g. 4:00–4:50 PM" oninput="saveSchedule()"/>
+        </div>
+      </div>
+      <div id="conflict-msg" style="display:none;background:#FEF2F2;border-left:3px solid #DC2626;padding:10px 14px;border-radius:0;font-size:0.83rem;color:#991B1B;line-height:1.55;margin-bottom:8px"></div>
+      <div id="good-msg" style="display:none;background:#ECFDF5;border-left:3px solid #059669;padding:10px 14px;border-radius:0;font-size:0.83rem;color:#065F46;line-height:1.55;margin-bottom:8px"></div>
+    </div>
+
+    <div style="border-top:1.5px solid var(--border);padding-top:16px">
+      <h4 style="font-size:0.95rem;font-weight:600;color:var(--text);margin-bottom:10px">Your session summary</h4>
+      <div id="schedule-summary" style="background:var(--soft);border-radius:12px;padding:14px 16px;font-size:0.85rem;color:var(--text-soft);line-height:1.7">
+        Complete the fields above to see your summary.
+      </div>
+    </div>
+
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(7)">Back</button><button class="btn btn-primary" onclick="goTo(9)">Next: Announcements</button></div>
+</div>
+
+<!-- SLIDE 9: Announcements -->
+<div class="slide" id="slide-9" data-title="Announcements">
+  <div class="card" style="padding:28px 32px 32px">
+    <div class="section-label">Section 4 — Weekly Announcements</div>
+    <h3 class="card-heading">Writing your Canvas announcements</h3>
+    <p class="card-sub">You must post one announcement per week. Every post should tell students <em style="color:var(--primary)">where, when, and what</em> you are covering.</p>
+
+    <div style="background:var(--soft);border-radius:14px;padding:16px 18px;margin-bottom:20px;border:1.5px solid var(--border)">
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--primary);margin-bottom:10px">What every announcement must include</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div style="background:var(--lavender);border-radius:10px;padding:11px 13px;text-align:center">
+          <div style="font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:3px">Where</div>
+          <div style="font-size:0.78rem;color:var(--text-mid);line-height:1.4">Building and room number</div>
+        </div>
+        <div style="background:var(--lavender);border-radius:10px;padding:11px 13px;text-align:center">
+          <div style="font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:3px">When</div>
+          <div style="font-size:0.78rem;color:var(--text-mid);line-height:1.4">Day, date, and time</div>
+        </div>
+        <div style="background:var(--lavender);border-radius:10px;padding:11px 13px;text-align:center">
+          <div style="font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:3px">What</div>
+          <div style="font-size:0.78rem;color:var(--text-mid);line-height:1.4">Topics and chapters you will cover</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:22px">
+      <div style="font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:12px">Examples from current SI leaders</div>
+
+      <div style="border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:10px">
+        <div style="background:#F4EFE4;padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:1.5px solid var(--border)">
+          <div style="width:32px;height:32px;border-radius:50%;background:#C1502A;color:white;font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">G</div>
+          <div>
+            <div style="font-size:0.82rem;font-weight:600;color:var(--text)">Genevieve — Organic Chemistry</div>
+            <div style="font-size:0.72rem;color:var(--text-soft)">Exam week review session</div>
+          </div>
+          <div style="margin-left:auto;font-size:0.7rem;color:var(--text-soft)">Example post</div>
+        </div>
+        <div style="padding:14px 16px">
+          <p style="font-size:0.85rem;color:var(--text);font-weight:600;margin-bottom:6px;line-height:1.4">Exam Week SI Review Session TODAY</p>
+          <p style="font-size:0.83rem;color:var(--text-soft);line-height:1.65;margin-bottom:8px">Hey everyone! I hope you're all having a great week as we head toward spring break! This week we'll be holding a longer Exam II SI Review Session covering:</p>
+          <ul style="list-style:none;padding:0;margin-bottom:10px">
+            <li style="padding:3px 0 3px 14px;position:relative;font-size:0.83rem;color:var(--text-soft)"><span style="position:absolute;left:0;top:10px;width:5px;height:5px;border-radius:50%;background:var(--primary);display:block"></span><strong style="color:var(--text-mid)">Chapter 20:</strong> Carboxylic Acids</li>
+            <li style="padding:3px 0 3px 14px;position:relative;font-size:0.83rem;color:var(--text-soft)"><span style="position:absolute;left:0;top:10px;width:5px;height:5px;border-radius:50%;background:var(--primary);display:block"></span><strong style="color:var(--text-mid)">Chapter 21:</strong> Enolates</li>
+            <li style="padding:3px 0 3px 14px;position:relative;font-size:0.83rem;color:var(--text-soft)"><span style="position:absolute;left:0;top:10px;width:5px;height:5px;border-radius:50%;background:var(--primary);display:block"></span><strong style="color:var(--text-mid)">Chapter 16:</strong> Dienes</li>
+          </ul>
+          <p style="font-size:0.83rem;color:var(--text-soft);line-height:1.6"><strong style="color:var(--text-mid)">Location:</strong> UTC 1.102 &nbsp;·&nbsp; <strong style="color:var(--text-mid)">Time:</strong> Tuesday, 3:30–5:30 PM</p>
+          <p style="font-size:0.83rem;color:var(--text-soft);line-height:1.6;margin-top:6px">Come by if you want to review key concepts, work through practice problems, and get ready for Exam II. Hope to see you there!</p>
+        </div>
+      </div>
+
+      <div style="border:1.5px solid var(--border);border-radius:14px;overflow:hidden">
+        <div style="background:#F4EFE4;padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:1.5px solid var(--border)">
+          <div style="width:32px;height:32px;border-radius:50%;background:#059669;color:white;font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">A</div>
+          <div>
+            <div style="font-size:0.82rem;font-weight:600;color:var(--text)">Ava — Biology</div>
+            <div style="font-size:0.72rem;color:var(--text-soft)">First week introduction post</div>
+          </div>
+          <div style="margin-left:auto;font-size:0.7rem;color:var(--text-soft)">Example post</div>
+        </div>
+        <div style="padding:14px 16px">
+          <p style="font-size:0.85rem;color:var(--text);font-weight:600;margin-bottom:6px">First Week of SI!</p>
+          <p style="font-size:0.83rem;color:var(--text-soft);line-height:1.65;margin-bottom:8px">Hello everyone! In case you missed me during class, my name is Ava, and I will be your SI leader. I am a junior neuroscience major, and this will be my second semester doing SI.</p>
+          <p style="font-size:0.83rem;color:var(--text-soft);line-height:1.65;margin-bottom:8px">SI is a way to review content and work with your peers to gain better study habits. I will be holding two sessions each week, so you can choose which you prefer. They will be on <strong style="color:var(--text-mid)">Mondays 4–5 PM in MEZ 1.122</strong> and <strong style="color:var(--text-mid)">Thursdays 3:30–4:30 PM in GAR 2.112.</strong> Attendance is not mandatory, but I highly recommend coming each week.</p>
+          <p style="font-size:0.83rem;color:var(--text-soft);line-height:1.65">If you have any questions, feel free to message me on Canvas or email me. I hope you have a great long weekend, and I can't wait to see everyone next week!</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="border-top:1.5px solid var(--border);padding-top:20px;margin-bottom:18px">
+      <div style="font-size:0.88rem;font-weight:600;color:var(--text);margin-bottom:4px">Practice: Your first post</div>
+      <div style="font-size:0.82rem;color:var(--text-soft);line-height:1.55;margin-bottom:10px">This goes out before your very first session. Introduce yourself, explain what SI is in your own words, and tell students when and where to find you.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:4px">Location</label>
+          <input type="text" id="ann-loc1" class="builder-input" style="width:100%" placeholder="e.g. UTC 1.102" oninput="saveAnn()"/>
+        </div>
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:4px">Date + time</label>
+          <input type="text" id="ann-time1" class="builder-input" style="width:100%" placeholder="e.g. Mon Jan 20, 4–5 PM" oninput="saveAnn()"/>
+        </div>
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:4px">Topics covered</label>
+          <input type="text" id="ann-topic1" class="builder-input" style="width:100%" placeholder="e.g. Ch. 1–3, intro review" oninput="saveAnn()"/>
+        </div>
+      </div>
+      <textarea class="builder-ta" id="ann-first" rows="5" placeholder="Write your full first-week announcement here. Include a personal intro, what SI is, your two session times, and an encouraging sign-off." oninput="saveAnn()"></textarea>
+    </div>
+
+    <div style="border-top:1.5px solid var(--border);padding-top:20px">
+      <div style="font-size:0.88rem;font-weight:600;color:var(--text);margin-bottom:4px">Practice: A regular weekly post</div>
+      <div style="font-size:0.82rem;color:var(--text-soft);line-height:1.55;margin-bottom:10px">This is the kind of post you will write every week after the first. Keep it warm, specific, and short. Students should be able to scan it in 10 seconds and know exactly where to show up.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:4px">Location</label>
+          <input type="text" id="ann-loc2" class="builder-input" style="width:100%" placeholder="e.g. GAR 2.112" oninput="saveAnn()"/>
+        </div>
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:4px">Date + time</label>
+          <input type="text" id="ann-time2" class="builder-input" style="width:100%" placeholder="e.g. Thu Feb 6, 3:30–4:30 PM" oninput="saveAnn()"/>
+        </div>
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:4px">Topics covered</label>
+          <input type="text" id="ann-topic2" class="builder-input" style="width:100%" placeholder="e.g. Ch. 7 Membrane Transport" oninput="saveAnn()"/>
+        </div>
+      </div>
+      <textarea class="builder-ta" id="ann-weekly" rows="4" placeholder="Write your weekly announcement here. Keep it concise — where, when, what you are covering, and one warm line to invite students." oninput="saveAnn()"></textarea>
+      <div style="text-align:right;margin-top:6px;font-size:0.78rem;color:#059669;opacity:0;transition:opacity .4s" id="ann-saved">Draft saved</div>
+    </div>
+
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(8)">Back</button><button class="btn btn-primary" onclick="goTo(10)">Next: Professor Email</button></div>
+</div>
+
+<!-- SLIDE 10: Professor Email -->
+<div class="slide" id="slide-10" data-title="Professor Email">
+  <div class="card" style="padding:28px 32px 32px">
+    <div class="section-label">Section 4 — Connecting with Your Professor</div>
+    <h3 class="card-heading">Write your professor introduction email</h3>
+    <p class="card-sub">Your professor is your partner in SI — introduce yourself before your first session.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+      <div style="background:#FAF5EC;border-radius:12px;padding:14px 16px;border:1.5px solid rgba(174,67,30,0.15)">
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#AE431E;margin-bottom:6px">What to include</div>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:6px">
+          <li style="padding-left:14px;position:relative;font-size:0.83rem;color:#6B5F4A;line-height:1.5"><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#D06224;display:block"></span>Your name, major, and year</li>
+          <li style="padding-left:14px;position:relative;font-size:0.83rem;color:#6B5F4A;line-height:1.5"><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#D06224;display:block"></span>That you are the SI leader for their course</li>
+          <li style="padding-left:14px;position:relative;font-size:0.83rem;color:#6B5F4A;line-height:1.5"><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#D06224;display:block"></span>Your commitment to attend every class</li>
+          <li style="padding-left:14px;position:relative;font-size:0.83rem;color:#6B5F4A;line-height:1.5"><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#D06224;display:block"></span>Your two SI session times and locations</li>
+          <li style="padding-left:14px;position:relative;font-size:0.83rem;color:#6B5F4A;line-height:1.5"><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#D06224;display:block"></span>An open invitation to collaborate as much or as little as they like</li>
+        </ul>
+      </div>
+      <div style="background:#FAF5EC;border-radius:12px;padding:14px 16px;border:1.5px solid rgba(174,67,30,0.15)">
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#AE431E;margin-bottom:6px">Tone and expectations</div>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:6px">
+          <li style="padding-left:14px;position:relative;font-size:0.83rem;color:#6B5F4A;line-height:1.5"><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#8A8635;display:block"></span>Keep it brief and professional — 3 short paragraphs is ideal</li>
+          <li style="padding-left:14px;position:relative;font-size:0.83rem;color:#6B5F4A;line-height:1.5"><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#8A8635;display:block"></span>Some professors will share exam topics or practice problems with you — welcome that</li>
+          <li style="padding-left:14px;position:relative;font-size:0.83rem;color:#6B5F4A;line-height:1.5"><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#8A8635;display:block"></span>Others prefer no involvement — that is equally fine, do not pressure them</li>
+          <li style="padding-left:14px;position:relative;font-size:0.83rem;color:#6B5F4A;line-height:1.5"><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#8A8635;display:block"></span>End with your contact info and an open door to reach you</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background:#F5E6C8;border-radius:12px;padding:14px 18px;margin-bottom:20px;border:1.5px solid rgba(174,67,30,0.2)">
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#AE431E;margin-bottom:8px">Example opening</div>
+      <p style="font-size:0.85rem;color:#3D2B1A;line-height:1.7;font-style:italic">"Dear Professor [Last Name], my name is [Your Name] and I am a [year, major] student at UT Austin. I have been selected as the Supplemental Instruction leader for your [Course Name] course this semester through the Sanger Learning Center. I wanted to reach out to introduce myself and let you know that I will be attending every class session so I can stay aligned with your instruction and best support your students..."</p>
+    </div>
+
+    <div style="margin-bottom:6px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:4px">Professor name</label>
+          <input type="text" id="prof-name" class="builder-input" style="width:100%" placeholder="e.g. Dr. Hansen" oninput="saveProfEmail()"/>
+        </div>
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:4px">Course name</label>
+          <input type="text" id="prof-course" class="builder-input" style="width:100%" placeholder="e.g. BIO 311C" oninput="saveProfEmail()"/>
+        </div>
+        <div>
+          <label class="lp-rlabel" style="display:block;margin-bottom:4px">Professor email</label>
+          <input type="text" id="prof-email-addr" class="builder-input" style="width:100%" placeholder="e.g. hansen@utexas.edu" oninput="saveProfEmail()"/>
+        </div>
+      </div>
+      <label class="lp-rlabel" style="display:block;margin-bottom:6px">Your email to the professor</label>
+      <textarea class="builder-ta" id="prof-email-body" rows="12"
+        placeholder="Subject: SI Leader Introduction — [Course Name]
+
+Dear Professor [Last Name],
+
+My name is [Your Name] and I am a [year, major] student at UT Austin. I have been selected as the Supplemental Instruction (SI) leader for your [Course Name] course this semester through the Sanger Learning Center.
+
+I will be attending every class session to stay aligned with your instruction and to best support your students outside of class. I will be holding two 50-minute SI sessions per week — [Day/Time, Location] and [Day/Time, Location] — which are open to all enrolled students at no cost.
+
+I want you to know that you are welcome to be as involved or as hands-off as you prefer. Some professors find it helpful to share upcoming exam topics or practice problems, while others prefer I operate independently — both approaches work perfectly. If you ever have suggestions or feedback, I welcome it.
+
+I look forward to supporting your students this semester. Please don't hesitate to reach out at [your email] with any questions.
+
+Best,
+[Your Name]
+SI Leader, [Course Name]" oninput="saveProfEmail()"></textarea>
+      <div style="text-align:right;margin-top:6px;font-size:0.78rem;color:#8A8635;opacity:0;transition:opacity .4s" id="prof-saved">Draft saved</div>
+    </div>
+
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(9)">Back</button><button class="btn btn-primary" onclick="goTo(11)">Next: Your Summary</button></div>
+</div>
+
+<!-- SLIDE 11: Summary -->
+<div class="slide" id="slide-11" data-title="Your Summary">
+  <div class="card" style="padding:28px 32px 32px">
+    <div class="section-label">Section 4 — Everything You Built</div>
+    <h3 class="card-heading">Your SI leader summary</h3>
+    <p class="card-sub">Everything you developed in this module in one place. Review it, then send it to yourself.</p>
+
+    <div id="summary-content" style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px">
+
+      <div class="summ-block" id="summ-schedule">
+        <div class="summ-hd">SI session schedule</div>
+        <div class="summ-body" id="summ-schedule-body">Complete the Schedule slide to see this.</div>
+      </div>
+
+      <div class="summ-block" id="summ-ann">
+        <div class="summ-hd">Canvas announcements</div>
+        <div class="summ-body">
+          <div style="margin-bottom:10px"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin-bottom:4px">First post</div><div class="summ-text" id="summ-ann-first">Not yet written.</div></div>
+          <div><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin-bottom:4px">Weekly post</div><div class="summ-text" id="summ-ann-weekly">Not yet written.</div></div>
+        </div>
+      </div>
+
+      <div class="summ-block" id="summ-prof">
+        <div class="summ-hd">Professor introduction email</div>
+        <div class="summ-body"><div class="summ-text" id="summ-prof-body">Not yet written.</div></div>
+      </div>
+
+      <div class="summ-block" id="summ-reflect">
+        <div class="summ-hd">Facilitation reflections</div>
+        <div class="summ-body">
+          <div style="margin-bottom:8px"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin-bottom:3px">Most natural technique</div><div class="summ-text" id="summ-r1">Not yet written.</div></div>
+          <div style="margin-bottom:8px"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin-bottom:3px">Biggest challenge</div><div class="summ-text" id="summ-r2">Not yet written.</div></div>
+          <div><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin-bottom:3px">One thing to do differently</div><div class="summ-text" id="summ-r3">Not yet written.</div></div>
+        </div>
+      </div>
+
+      <div class="summ-block" id="summ-lp">
+        <div class="summ-hd">Your lesson plan</div>
+        <div class="summ-body">
+          <div style="margin-bottom:6px"><span style="font-size:0.9rem;font-weight:600;color:#1A1710" id="summ-lp-title">No title yet.</span></div>
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin-bottom:3px">Objective</div>
+          <div class="summ-text" id="summ-lp-obj">Not yet written.</div>
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin:8px 0 3px">Icebreaker</div>
+          <div class="summ-text" id="summ-lp-ice">Not yet written.</div>
+          <div id="summ-phases-wrap">
+            <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin:8px 0 3px">Phase 1</div><div class="summ-text" id="summ-s0-title"></div><div class="summ-text" id="summ-s0"></div>
+            <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin:8px 0 3px">Phase 2</div><div class="summ-text" id="summ-s1-title"></div><div class="summ-text" id="summ-s1"></div>
+            <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin:8px 0 3px">Phase 3</div><div class="summ-text" id="summ-s2-title"></div><div class="summ-text" id="summ-s2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="summ-block" id="summ-trouble">
+        <div class="summ-hd">Troubleshooting plan</div>
+        <div class="summ-body">
+          <div style="margin-bottom:8px"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin-bottom:3px">When students don't respond</div><div class="summ-text" id="summ-t0">Not yet written.</div></div>
+          <div style="margin-bottom:8px"><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin-bottom:3px">When students ask you for the answer</div><div class="summ-text" id="summ-t1">Not yet written.</div></div>
+          <div><div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#AE431E;margin-bottom:3px">When students won't work in groups</div><div class="summ-text" id="summ-t2">Not yet written.</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="border-top:1.5px solid rgba(174,67,30,0.15);padding-top:20px">
+      <div style="font-size:0.88rem;font-weight:600;color:#1A1710;margin-bottom:4px">Send this summary to yourself</div>
+      <p style="font-size:0.82rem;color:#6B5F4A;margin-bottom:12px;line-height:1.55">Enter your email address and click Send — a copy of everything you built will be formatted and sent to you so you can reference it before your first session.</p>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <input type="email" id="send-email" class="builder-input" style="flex:1;min-width:200px" placeholder="your.email@utexas.edu"/>
+        <button class="btn btn-primary" onclick="sendSummary()" style="padding:10px 24px;border-radius:50px;white-space:nowrap">Send to my email</button>
+      </div>
+      <div id="send-msg" style="margin-top:10px;font-size:0.82rem;display:none"></div>
+    </div>
+
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(10)">Back</button><button class="btn btn-primary" onclick="goTo(12)">Next: Lesson Plan Example</button></div>
+</div>
+
+<!-- SLIDE 7: Lesson Plan 1 -->
+<div class="slide" id="slide-12" data-title="Lesson Plan 1">
+  <div class="card" style="padding:28px 32px 32px">
+    <div class="section-label">Section 5 — Example Lesson Plan</div>
+    <h3 class="card-heading">Lesson plan 1 — Sequencing for the MCAT</h3>
+    <p class="card-sub">50-minute session · Group-based · MCAT prep</p>
+
+    <div style="display:flex;height:6px;border-radius:3px;overflow:hidden;margin-bottom:16px;gap:2px">
+      <div style="flex:5;background:#C48E2A;border-radius:2px"></div>
+      <div style="flex:20;background:#5C6E3A;border-radius:2px"></div>
+      <div style="flex:12;background:#C1502A;border-radius:2px"></div>
+      <div style="flex:13;background:#2A5F6E;border-radius:2px"></div>
+    </div>
+
+    <div style="background:var(--soft);border-left:3px solid var(--primary);padding:12px 16px;margin-bottom:22px;border-radius:0">
+      <div style="font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--primary);margin-bottom:4px">Lesson objective</div>
+      <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.6">Students will be able to identify and apply sequential ordering strategies to MCAT-style passages by physically manipulating story fragments, collaboratively reconstructing narrative logic, and transferring that reasoning process to an authentic MCAT excerpt.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:52px 1fr 1fr;gap:0;margin-bottom:8px">
+      <div></div>
+      <div style="font-size:0.7rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text-soft);padding:0 14px">Lesson plan</div>
+      <div style="font-size:0.7rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text-soft);padding:0 14px">How does this support SI? <span id="lp-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#059669;margin-left:5px;opacity:0;transition:opacity .4s;vertical-align:middle"></span></div>
+    </div>
+
+    <div class="lp-row">
+      <div class="lp-time"><span class="lp-min">5</span><span class="lp-unit">min</span><div class="lp-bar" style="background:#C48E2A"></div></div>
+      <div class="lp-body">
+        <span class="lp-tag" style="background:#FBF0E0;color:#6B3820">Icebreaker</span>
+        <div class="lp-heading">Non-academic quick check-in</div>
+        <div class="lp-text">SI leader poses one low-stakes personal question — e.g. "What is one thing you watched, read, or listened to this week that you'd recommend?" Students share briefly (20–30 sec each). SI leader participates too, modeling peer-level engagement. No right or wrong answer — reduces anxiety before academic content begins.</div>
+      </div>
+      <div class="lp-reflect">
+        <div class="lp-rlabel">Your reflection</div>
+        <textarea class="lp-ta" id="lp0" placeholder="How does the icebreaker support an SI environment? What does it do for group dynamics before academic content?" oninput="saveLp()"></textarea>
+      </div>
+    </div>
+
+    <div class="lp-row">
+      <div class="lp-time"><span class="lp-min">20</span><span class="lp-unit">min</span><div class="lp-bar" style="background:#5C6E3A"></div></div>
+      <div class="lp-body">
+        <span class="lp-tag" style="background:#E8F0DC;color:#3A5020">Group activity</span>
+        <div class="lp-heading">Cut-up story sequencing</div>
+        <div class="lp-text">SI leader pre-cuts 3–4 short narratives into individual sentence strips — all shuffled together in an envelope per group.<br><br><strong>Part A (8 min) — Sort by story:</strong> Small groups (3–4 students) sort strips by which story each belongs to, justifying choices aloud.<br><br><strong>Part B (7 min) — Sequence within stories:</strong> Groups arrange each story's strips in correct order. Every member must be able to explain the final sequence. SI leader circulates with probing questions — does not give answers.</div>
+      </div>
+      <div class="lp-reflect">
+        <div class="lp-rlabel">Your reflection</div>
+        <textarea class="lp-ta" id="lp1" placeholder="How does physical manipulation of strips support collaborative learning? What SI principles does this activity embody?" oninput="saveLp()"></textarea>
+      </div>
+    </div>
+
+    <div class="lp-row">
+      <div class="lp-time"><span class="lp-min">12</span><span class="lp-unit">min</span><div class="lp-bar" style="background:#C1502A"></div></div>
+      <div class="lp-body">
+        <span class="lp-tag" style="background:#FAE8DC;color:#6B2A10">Whole-group debrief</span>
+        <div class="lp-heading">Sequencing strategies + MCAT connection</div>
+        <div class="lp-text">SI leader brings the full group back. Discussion is facilitated — not lectured. Key questions: "What cues did you use to decide which strip came first?" (hold 5-sec wait time) · "Did your group disagree? How did you resolve it?" · SI leader redirects answers back to group rather than commenting. Bridge: "Where in the MCAT might you need to sequence information?" Records 2–3 student-generated strategies on the board.</div>
+      </div>
+      <div class="lp-reflect">
+        <div class="lp-rlabel">Your reflection</div>
+        <textarea class="lp-ta" id="lp2" placeholder="How does the debrief reflect SI facilitation techniques? Which techniques — wait time, redirecting, checking for understanding — appear here?" oninput="saveLp()"></textarea>
+      </div>
+    </div>
+
+    <div class="lp-row" style="margin-bottom:0">
+      <div class="lp-time"><span class="lp-min">13</span><span class="lp-unit">min</span><div class="lp-bar" style="background:#2A5F6E"></div></div>
+      <div class="lp-body">
+        <span class="lp-tag" style="background:#DCE8F0;color:#241A0F">Application</span>
+        <div class="lp-heading">MCAT excerpt — paired sequencing practice</div>
+        <div class="lp-text">SI leader distributes a real MCAT-style passage requiring sequential reasoning. Students work in pairs to annotate together — identifying sequence shifts, cause-effect, and chronological signals. Each pair answers 1–2 targeted questions, then shares one insight with the group. SI leader checks for understanding: "Can someone restate what that pair found in different words?" Wrap-up: each student writes one sentence connecting today's activity to a study strategy they will use this week.</div>
+      </div>
+      <div class="lp-reflect">
+        <div class="lp-rlabel">Your reflection</div>
+        <textarea class="lp-ta" id="lp3" placeholder="How does pair work here differ from the small-group work earlier? Why is transferring to an authentic MCAT excerpt important for SI?" oninput="saveLp()"></textarea>
+      </div>
+    </div>
+
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(11)">Back</button><button class="btn btn-primary" onclick="goTo(13)">Next: Build Your Own</button></div>
+</div>
+
+<!-- SLIDE 8: Build Your Own LP -->
+<div class="slide" id="slide-13" data-title="Build Your Lesson Plan">
+  <div class="card" style="padding:28px 32px 32px">
+    <div class="section-label">Section 6 — Your Turn</div>
+    <h3 class="card-heading">Build your own SI lesson plan</h3>
+    <p class="card-sub">Design a collaborative, SI-focused lesson and troubleshoot common challenges before they happen.</p>
+
+    <div class="lp-builder-meta">
+      <div class="builder-row">
+        <label class="builder-label">Lesson title</label>
+        <input type="text" id="b-title" class="builder-input" placeholder="e.g. Cell membrane transport — biology SI session" oninput="saveB()"/>
+      </div>
+      <div class="builder-row">
+        <label class="builder-label">Subject area</label>
+        <div class="subject-toggle">
+          <button class="subj-btn active" id="subj-bio" onclick="setSubject('bio')">Biology</button>
+          <button class="subj-btn" id="subj-phys" onclick="setSubject('phys')">Physical science</button>
+        </div>
+      </div>
+      <div class="builder-row">
+        <label class="builder-label">Session duration</label>
+        <div class="dur-toggle">
+          <button class="dur-btn active" id="dur-50" onclick="setDur('50')">50 min</button>
+          <button class="dur-btn" id="dur-60" onclick="setDur('60')">60 min</button>
+          <button class="dur-btn" id="dur-75" onclick="setDur('75')">75 min</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="builder-section">
+      <div class="builder-section-hd">Lesson objective</div>
+      <div class="builder-hint">Write in the format: "Students will be able to [verb] [concept] by [method]."</div>
+      <textarea class="builder-ta" id="b-obj" rows="3" placeholder="Students will be able to..." oninput="saveB()"></textarea>
+    </div>
+
+    <div class="builder-section">
+      <div class="builder-section-hd">Do now / icebreaker <span class="builder-min-badge" id="ice-min">5 min</span></div>
+      <div class="builder-hint">Design a non-academic or low-stakes opener that gets students talking before the content begins. It should feel safe and quick.</div>
+      <textarea class="builder-ta" id="b-ice" rows="3" placeholder="Describe your icebreaker or do-now activity..." oninput="saveB()"></textarea>
+    </div>
+
+    <div class="builder-section">
+      <div class="builder-section-hd">Main activity sequence</div>
+      <div class="builder-hint">Break your session into 2–4 collaborative phases. Each phase should involve peer interaction — not you presenting. Use the SI techniques you practiced.</div>
+
+      <div class="seq-block" id="seq0">
+        <div class="seq-header">
+          <div class="seq-num">Phase 1</div>
+          <input type="text" class="seq-title-input" id="b-s0-title" placeholder="Phase title (e.g. Small group problem solving)" oninput="saveB()"/>
+          <input type="text" class="seq-time-input" id="b-s0-time" placeholder="__ min" oninput="saveB()"/>
+        </div>
+        <textarea class="builder-ta" id="b-s0" rows="3" placeholder="Describe what students do, how groups are structured, and what the SI leader's role is during this phase..." oninput="saveB()"></textarea>
+      </div>
+
+      <div class="seq-block" id="seq1">
+        <div class="seq-header">
+          <div class="seq-num">Phase 2</div>
+          <input type="text" class="seq-title-input" id="b-s1-title" placeholder="Phase title (e.g. Gallery walk / debrief)" oninput="saveB()"/>
+          <input type="text" class="seq-time-input" id="b-s1-time" placeholder="__ min" oninput="saveB()"/>
+        </div>
+        <textarea class="builder-ta" id="b-s1" rows="3" placeholder="Describe what students do, how groups are structured, and what the SI leader's role is during this phase..." oninput="saveB()"></textarea>
+      </div>
+
+      <div class="seq-block" id="seq2">
+        <div class="seq-header">
+          <div class="seq-num">Phase 3</div>
+          <input type="text" class="seq-title-input" id="b-s2-title" placeholder="Phase title (e.g. Whole-group discussion)" oninput="saveB()"/>
+          <input type="text" class="seq-time-input" id="b-s2-time" placeholder="__ min" oninput="saveB()"/>
+        </div>
+        <textarea class="builder-ta" id="b-s2" rows="3" placeholder="Describe what students do, how groups are structured, and what the SI leader's role is during this phase..." oninput="saveB()"></textarea>
+      </div>
+
+      <div class="seq-block" id="seq3" style="display:none">
+        <div class="seq-header">
+          <div class="seq-num">Phase 4</div>
+          <input type="text" class="seq-title-input" id="b-s3-title" placeholder="Phase title (e.g. Application / wrap-up)" oninput="saveB()"/>
+          <input type="text" class="seq-time-input" id="b-s3-time" placeholder="__ min" oninput="saveB()"/>
+        </div>
+        <textarea class="builder-ta" id="b-s3" rows="3" placeholder="Describe what students do, how groups are structured, and what the SI leader's role is during this phase..." oninput="saveB()"></textarea>
+      </div>
+
+      <button class="btn btn-ghost" style="font-size:0.82rem;padding:8px 18px;margin-top:6px" id="add-phase-btn" onclick="addPhase()">+ Add phase 4</button>
+    </div>
+
+    <div class="builder-section">
+      <div class="builder-section-hd">Troubleshooting plan</div>
+      <div class="builder-hint">SI sessions don't always go smoothly. Plan your responses now so you are ready in the moment.</div>
+
+      <div class="trouble-card">
+        <div class="trouble-scenario">
+          <div class="trouble-icon">01</div>
+          <div>
+            <div class="trouble-title">Students don't respond to your questions</div>
+            <div class="trouble-sub">You ask a question and get silence. No hands, no eye contact.</div>
+          </div>
+        </div>
+        <div style="padding:10px 14px 0;background:#FAF5EC">
+          <div style="font-size:0.68rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#8A8635;margin-bottom:5px">Sentence starters to try</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">
+            <span class="starter-chip" onclick="appendStarter('b-t0',this)">"Let's try think-pair-share first..."</span>
+            <span class="starter-chip" onclick="appendStarter('b-t0',this)">"I'll rephrase — what if I asked it this way..."</span>
+            <span class="starter-chip" onclick="appendStarter('b-t0',this)">"Write your first thought down, then share..."</span>
+          </div>
+        </div>
+        <textarea class="builder-ta" id="b-t0" rows="3" placeholder="What will you do? (e.g. use think-pair-share, rephrase the question, lower the stakes of the ask, use a written response first...)" oninput="saveB()"></textarea>
+      </div>
+
+      <div class="trouble-card">
+        <div class="trouble-scenario">
+          <div class="trouble-icon">02</div>
+          <div>
+            <div class="trouble-title">A student directly asks you for the answer</div>
+            <div class="trouble-sub">"Just tell us — what is the right answer?"</div>
+          </div>
+        </div>
+        <div style="padding:10px 14px 0;background:#FAF5EC">
+          <div style="font-size:0.68rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#8A8635;margin-bottom:5px">Sentence starters to try</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">
+            <span class="starter-chip" onclick="appendStarter('b-t1',this)">"I hear you — who in the room has a thought on this?"</span>
+            <span class="starter-chip" onclick="appendStarter('b-t1',this)">"Let's see if we can get there together — what do you know so far?"</span>
+            <span class="starter-chip" onclick="appendStarter('b-t1',this)">"What would you tell a classmate who asked you the same question?"</span>
+          </div>
+        </div>
+        <textarea class="builder-ta" id="b-t1" rows="3" placeholder="What will you say or do? (e.g. redirect to the group, ask a scaffolding question, validate the frustration and refocus...)" oninput="saveB()"></textarea>
+      </div>
+
+      <div class="trouble-card">
+        <div class="trouble-scenario">
+          <div class="trouble-icon">03</div>
+          <div>
+            <div class="trouble-title">Students refuse to work in groups</div>
+            <div class="trouble-sub">"Can I just work alone?" or students sitting silently in groups.</div>
+          </div>
+        </div>
+        <div style="padding:10px 14px 0;background:#FAF5EC">
+          <div style="font-size:0.68rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#8A8635;margin-bottom:5px">Sentence starters to try</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">
+            <span class="starter-chip" onclick="appendStarter('b-t2',this)">"Start with your partner first — just the two of you for 3 minutes..."</span>
+            <span class="starter-chip" onclick="appendStarter('b-t2',this)">"Each person gets a role: one writes, one explains, one checks..."</span>
+            <span class="starter-chip" onclick="appendStarter('b-t2',this)">"I get it — teaching someone else is actually the fastest way to learn this..."</span>
+          </div>
+        </div>
+        <textarea class="builder-ta" id="b-t2" rows="3" placeholder="What will you do? (e.g. assign explicit roles, reduce group size, use pair work first, acknowledge the discomfort...)" oninput="saveB()"></textarea>
+      </div>
+    </div>
+
+    <div class="builder-save-row">
+      <span id="b-saved-msg" style="font-size:0.8rem;color:#059669;opacity:0;transition:opacity .4s">Draft saved</span>
+    </div>
+
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(12)">Back</button><button class="btn btn-primary" onclick="goTo(14)">Next: Log Your Hours</button></div>
+</div>
+
+<!-- SLIDE 12: Workday Time Entry -->
+<div class="slide" id="slide-14" data-title="Log Your Hours">
+  <div class="card" style="padding:28px 32px 32px">
+    <div class="section-label">Section 7 — Getting Paid</div>
+    <h3 class="card-heading">How to log your hours in Workday</h3>
+    <p class="card-sub">You must submit your hours every week to get paid. Here is the full process step by step.</p>
+
+    <div style="background:#FEF3E2;border-left:3px solid #C05621;padding:12px 16px;margin-bottom:22px;border-radius:0">
+      <p style="font-size:0.83rem;color:#7B341E;line-height:1.6"><strong>Important:</strong> Log hours for each SI session (1 hr), each prep block (typically 1–2 hrs), and your cohort meeting. Use the comment field to describe what you did. Submit every week — unsubmitted hours do not process for payment.</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <div class="wd-step">
+        <div class="wd-num">1</div>
+        <div class="wd-content">
+          <div class="wd-title">Check Workday for an unsubmitted time reminder</div>
+          <div class="wd-body">From the Workday homepage, look under <strong style="color:var(--text-mid)">Timely Suggestions</strong>. If you see "You Have Unsubmitted Time — Make sure to submit your time entries," click <strong style="color:var(--text-mid)">My Time</strong> to navigate to your timesheet. You can also find it directly by searching "Enter Time" in Workday.</div>
+          <div class="wd-mock" style="background:#F5F5F5;border-radius:10px;padding:12px 14px;margin-top:10px">
+            <div style="font-size:0.75rem;font-weight:600;color:#444;margin-bottom:8px">Timely Suggestions</div>
+            <div style="background:white;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;border:1px solid #E5E5E5">
+              <div style="width:32px;height:32px;border-radius:50%;border:2.5px solid #C05621;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <div style="width:16px;height:16px;border:2px solid #C05621;border-radius:50%;border-top-color:transparent"></div>
+              </div>
+              <div style="flex:1">
+                <div style="font-size:0.82rem;font-weight:600;color:#1a1a1a">You Have Unsubmitted Time</div>
+                <div style="font-size:0.75rem;color:#666">Make sure to submit your time entries</div>
+              </div>
+              <div style="font-size:0.78rem;font-weight:600;color:#1a1a1a">My Time &rsaquo;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wd-step">
+        <div class="wd-num">2</div>
+        <div class="wd-content">
+          <div class="wd-title">Open the weekly calendar view</div>
+          <div class="wd-body">You will see a weekly calendar showing Mon–Sun with hours logged per day. Navigate to the correct week using the arrow buttons. Each day shows "Hours: 0" until you add entries. Click on any day to log time for that day.</div>
+          <div class="wd-mock" style="background:#F5F5F5;border-radius:10px;padding:12px 14px;margin-top:10px">
+            <div style="background:#C1502A;color:white;font-size:0.8rem;font-weight:700;padding:8px 12px;border-radius:6px 6px 0 0;margin:-12px -14px 10px">Enter Time &nbsp;·&nbsp; <span style="font-weight:400;opacity:.85">Mar 9 – 15, 2026</span></div>
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
+              <div style="background:white;border-radius:6px;padding:6px 8px;text-align:center;border:1px solid #E5E5E5"><div style="font-size:0.7rem;font-weight:600;color:#444">Mon 3/9</div><div style="font-size:0.68rem;color:#999">Hours: 0</div></div>
+              <div style="background:white;border-radius:6px;padding:6px 8px;text-align:center;border:1px solid #E5E5E5"><div style="font-size:0.7rem;font-weight:600;color:#444">Tue 3/10</div><div style="font-size:0.68rem;color:#999">Hours: 0</div></div>
+              <div style="background:white;border-radius:6px;padding:6px 8px;text-align:center;border:1px solid #E5E5E5"><div style="font-size:0.7rem;font-weight:600;color:#444">Wed 3/11</div><div style="font-size:0.68rem;color:#999">Hours: 0</div></div>
+              <div style="background:white;border-radius:6px;padding:6px 8px;text-align:center;border:1px solid #E5E5E5"><div style="font-size:0.7rem;font-weight:600;color:#444">Thu 3/12</div><div style="font-size:0.68rem;color:#999">Hours: 0</div></div>
+              <div style="background:white;border-radius:6px;padding:6px 8px;text-align:center;border:1px solid #E5E5E5"><div style="font-size:0.7rem;font-weight:600;color:#444">Fri 3/13</div><div style="font-size:0.68rem;color:#999">Hours: 0</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wd-step">
+        <div class="wd-num">3</div>
+        <div class="wd-content">
+          <div class="wd-title">Click a day and fill in the Enter Time form</div>
+          <div class="wd-body">A modal will appear. <strong style="color:var(--text-mid)">Time Type</strong> should be set to "Hours Worked." Enter the number of hours in the <strong style="color:var(--text-mid)">Hours</strong> field. In the <strong style="color:var(--text-mid)">Comment</strong> field, briefly describe what you did — e.g. "prep materials for SI session and held 1 SI session." Click <strong style="color:var(--text-mid)">OK</strong> when done.</div>
+          <div class="wd-mock" style="background:#F5F5F5;border-radius:10px;padding:14px;margin-top:10px;max-width:340px">
+            <div style="font-size:0.82rem;font-weight:700;color:#1a1a1a;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #E5E5E5">Enter Time</div>
+            <div style="font-size:0.72rem;color:#666;margin-bottom:10px">03/10/2026</div>
+            <div style="margin-bottom:8px"><div style="font-size:0.72rem;color:#444;margin-bottom:3px">Time Type <span style="color:#C05621">*</span></div><div style="background:white;border:1px solid #ddd;border-radius:6px;padding:6px 10px;font-size:0.78rem;color:#333;display:flex;align-items:center;gap:6px"><span style="color:#666;font-size:0.7rem">×</span> Hours Worked</div></div>
+            <div style="margin-bottom:8px"><div style="font-size:0.72rem;color:#444;margin-bottom:3px">Hours <span style="color:#C05621">*</span></div><div style="background:white;border:1px solid #0078D4;border-radius:6px;padding:6px 10px;font-size:0.78rem;color:#333">4</div></div>
+            <div style="margin-bottom:12px"><div style="font-size:0.72rem;color:#444;margin-bottom:3px">Comment</div><div style="background:white;border:1px solid #0078D4;border-radius:6px;padding:6px 10px;font-size:0.72rem;color:#333;line-height:1.4">prep materials for SI session and held 1 SI session</div></div>
+            <div style="display:flex;gap:8px"><div style="background:#C1502A;color:white;border-radius:20px;padding:6px 18px;font-size:0.75rem;font-weight:600">OK</div><div style="border:1px solid #ccc;border-radius:20px;padding:6px 14px;font-size:0.75rem;color:#555">Cancel</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wd-step">
+        <div class="wd-num">4</div>
+        <div class="wd-content">
+          <div class="wd-title">Confirm the entry appears on your calendar</div>
+          <div class="wd-body">After clicking OK, the day's column will show "Hours Worked — X Hours — Not Submitted." This means the entry is saved but not yet sent for payroll. Repeat for each day you worked that week — sessions, prep time, and cohort meeting.</div>
+          <div class="wd-mock" style="background:#F5F5F5;border-radius:10px;padding:10px 14px;margin-top:10px;max-width:240px">
+            <div style="font-size:0.7rem;font-weight:600;color:#444;margin-bottom:6px">Tue, 3/10 &nbsp;·&nbsp; Hours: 4</div>
+            <div style="background:white;border-left:3px solid #C1502A;border-radius:0 6px 6px 0;padding:8px 10px">
+              <div style="font-size:0.75rem;font-weight:600;color:#1a1a1a">Hours Worked</div>
+              <div style="font-size:0.72rem;color:#555">4 Hours</div>
+              <div style="font-size:0.7rem;color:#888;display:flex;align-items:center;gap:4px;margin-top:3px"><span style="width:10px;height:10px;border:1.5px solid #888;border-radius:50%;display:inline-block"></span> Not Submitted</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wd-step">
+        <div class="wd-num">5</div>
+        <div class="wd-content">
+          <div class="wd-title">Click Review to submit the week</div>
+          <div class="wd-body">Once all days are entered, scroll to the bottom of the calendar and click the orange <strong style="color:var(--text-mid)">Review</strong> button. You will see a summary showing your total hours for the week — verify it looks correct.</div>
+          <div class="wd-mock" style="background:#F5F5F5;border-radius:10px;padding:12px 14px;margin-top:10px;max-width:280px">
+            <div style="background:#C1502A;color:white;border-radius:20px;padding:9px 0;font-size:0.82rem;font-weight:600;text-align:center;width:100%">Review</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wd-step" style="border-bottom:none">
+        <div class="wd-num" style="background:#059669">6</div>
+        <div class="wd-content">
+          <div class="wd-title">Review your totals and click Submit</div>
+          <div class="wd-body">The review screen shows your total hours for the pay period. Verify everything looks right, then click the orange <strong style="color:var(--text-mid)">Submit</strong> button. Your timesheet is now submitted — your supervisor will approve it and your hours will process for payment that cycle.</div>
+          <div class="wd-mock" style="background:#F5F5F5;border-radius:10px;padding:14px;margin-top:10px;max-width:320px">
+            <div style="font-size:0.82rem;font-weight:700;color:#1a1a1a;margin-bottom:10px">Total for March 2 – 8, 2026</div>
+            <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #E5E5E5;font-size:0.78rem;color:#333"><span>Hours Worked</span><span style="font-weight:600">8</span></div>
+            <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #E5E5E5;font-size:0.78rem;color:#333"><span>Absent Time</span><span>0</span></div>
+            <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:0.82rem;font-weight:600;color:#1a1a1a"><span>Timesheet Total</span><span>8</span></div>
+            <div style="margin-top:10px;display:flex;gap:8px"><div style="background:#C1502A;color:white;border-radius:20px;padding:7px 20px;font-size:0.75rem;font-weight:600">Submit</div><div style="border:1px solid #ccc;border-radius:20px;padding:7px 14px;font-size:0.75rem;color:#555">Cancel</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="background:var(--lavender);border-radius:12px;padding:14px 16px;margin-top:18px">
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--primary);margin-bottom:6px">What to log each week</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div style="background:white;border-radius:8px;padding:9px 11px;font-size:0.8rem"><div style="font-weight:600;color:var(--text-mid);margin-bottom:2px">SI sessions</div><div style="color:var(--text-soft)">1 hr per session held (you hold 2/week)</div></div>
+        <div style="background:white;border-radius:8px;padding:9px 11px;font-size:0.8rem"><div style="font-weight:600;color:var(--text-mid);margin-bottom:2px">Prep time</div><div style="color:var(--text-soft)">1–2 hrs per week for lesson planning</div></div>
+        <div style="background:white;border-radius:8px;padding:9px 11px;font-size:0.8rem"><div style="font-weight:600;color:var(--text-mid);margin-bottom:2px">Cohort meeting</div><div style="color:var(--text-soft)">Log the duration of your weekly meeting</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="btn-row"><button class="btn btn-ghost" onclick="goTo(13)">Back</button><button class="btn btn-primary" onclick="goTo(15)">Finish</button></div>
+</div>
+
+<!-- SLIDE 9: Complete -->
+<div class="slide" id="slide-15" data-title="Complete">
+  <div class="card">
+    <div class="section-label">Training Complete</div>
+    <h3 class="complete-title">You are ready for Training Day</h3>
+    <p class="complete-sub">You have reviewed everything you need heading into your New SI Leader Training. Bring your learner workbook, review your reflections the night before your first session, and trust the process.</p>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-n" id="stat-q">—</div><div class="stat-lbl">Quiz Score</div></div>
+      <div class="stat-card"><div class="stat-n" id="stat-s">—</div><div class="stat-lbl">Scenarios Correct</div></div>
+      <div class="stat-card"><div class="stat-n" id="stat-c">—</div><div class="stat-lbl">Action Items Done</div></div>
+    </div>
+    <div class="info-strip">Bring this module's summary and your learner workbook to your training session.</div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-ghost" onclick="goTo(14)">Back</button>
+    <button class="btn btn-outline" onclick="window.print()">Print Summary</button>
+  </div>
+</div>
+
+</main>
+
+</div><!-- end .app-layout -->
+
+<script>
+const N = 16;
+let cur = 0;
+const qa = {q1:null,q2:null};
+const sa = {sc1:null,sc2:null,sc3:null,sc4:null,sc5:null,sc6:null};
+const correct = {sc1:'wait',sc2:'rephrase',sc3:'redirect',sc4:'check',sc5:'redirect',sc6:'check'};
+const scFb = {
+  sc1:{
+    wait:{c:true,m:"Correct. This is exactly when Wait Time works. The silence is uncomfortable, but students need space to process. Hold firm — if nobody responds after a full wait, then rephrase. Don't jump to the answer."},
+    redirect:{c:false,m:"Redirecting works when a student asks you something. Here no one has asked — they just need more time to think. Start with Wait Time and hold the silence."},
+    check:{c:false,m:"Checking for Understanding is for after content has been worked through. Right now you're waiting for a first response — hold the silence before doing anything else."}
+  },
+  sc2:{
+    answer:{c:false,m:"Resist this — giving the answer the moment silence gets uncomfortable is the most common SI mistake. The group hasn't truly had a chance yet. Rephrase or simplify first."},
+    rephrase:{c:true,m:"Correct. When full wait time passes with zero response, the question may be too large or abstract. Break it down: try 'Let's start smaller — what do you know about what hypotonic means?' Then build back up."},
+    move:{c:false,m:"Moving on leaves the confusion unresolved. The group will carry that gap into the next problem. Rephrase or simplify — don't abandon the question."}
+  },
+  sc3:{
+    wait:{c:false,m:"Wait Time is for after you ask a question and need to give the group space to think. Here a student has asked you a question — if you just wait silently, they'll wait too."},
+    redirect:{c:true,m:"Correct. Turn it back to the group: 'Good question — who in here has tried a limiting reagent problem before? What was your first step?' You stay out of the expert role and activate peer knowledge."},
+    check:{c:false,m:"A Check for Understanding is useful after content has been covered. Here the student is asking you to cover the content — redirect that ask to the group instead."}
+  },
+  sc4:{
+    wait:{c:false,m:"Wait Time is for after you ask a question. The problem is already done — what you need now is to actively verify that each student understood the reasoning, not just the final answer."},
+    redirect:{c:false,m:"Redirecting is for when a student asks you something. Right now no one has asked — you need to proactively check comprehension before moving on."},
+    check:{c:true,m:"Correct. Ask each person to explain one step of the solution in their own words, or use a quick 'fist-to-five' check. This is exactly what Check for Understanding is designed for."}
+  },
+  sc5:{
+    wait:{c:false,m:"Wait Time is for after you've asked a question. Here a student has asked you one. Holding silence won't help — redirect it back to the group so they reason it out together."},
+    redirect:{c:true,m:"Correct — and this is especially powerful when you're uncertain yourself. Try: 'Interesting question — what do the rest of you think? What does your understanding of the refractory period tell you?' The group explores it, and you learn alongside them."},
+    check:{c:false,m:"A Check for Understanding works after content has been established. Here the content is in question — redirect it to the group to reason through together."}
+  },
+  sc6:{
+    wait:{c:false,m:"Wait Time works after you ask a question and need students to think. Here you've given instructions and need to actively verify understanding before they start — that's a Check for Understanding."},
+    redirect:{c:false,m:"Redirecting is for student questions directed at you. Here you need to proactively check that the group understood your directions before they begin the activity."},
+    check:{c:true,m:"Correct. Ask someone to repeat the directions back in their own words: 'Can someone walk me through what your group is going to do first?' This confirms understanding and catches confusion before it derails the activity."}
+  }
+};
+
+function goTo(i) {
+  document.getElementById(`slide-${cur}`).classList.remove('active');
+  cur = i;
+  document.getElementById(`slide-${cur}`).classList.add('active');
+  const title = document.getElementById(`slide-${cur}`).dataset.title;
+  document.getElementById('step-label').textContent = title;
+  document.getElementById('progress-fill').style.width = (cur/(N-1)*100)+'%';
+  document.querySelectorAll('.ndot').forEach((d,idx)=>{ d.classList.remove('active','done'); if(idx===cur)d.classList.add('active'); else if(idx<cur)d.classList.add('done'); });
+  updateSidenav();
+  if(i===15) updateStats();
+  if(i===11) populateSummary();
+  window.scrollTo({top:0,behavior:'smooth'});
+  const nav=document.getElementById('sidenav');
+  if(nav&&nav.classList.contains('open')) nav.classList.remove('open');
+}
+
+function updateSidenav(){
+  for(let i=0;i<N;i++){
+    const el=document.getElementById('nav-'+i);
+    if(!el) continue;
+    el.classList.remove('active','done');
+    if(i===cur) el.classList.add('active');
+    else if(i<cur) el.classList.add('done');
+  }
+}
+
+function buildDots(){
+  const c=document.getElementById('nav-dots');
+  for(let i=0;i<N;i++){
+    const d=document.createElement('button');
+    d.className='ndot'+(i===0?' active':'');
+    d.title=document.getElementById(`slide-${i}`).dataset.title;
+    d.onclick=()=>goTo(i);
+    c.appendChild(d);
+  }
+}
+
+function checkQ(qid,btn,correct){
+  const c=document.getElementById(qid);
+  if(c.querySelector('.locked'))return;
+  c.querySelectorAll('.opt').forEach(b=>b.classList.add('locked'));
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById(`${qid}-fb`);
+  fb.className='feedback show '+(correct?'correct':'wrong');
+  fb.textContent=correct
+    ?(qid==='q1'?'Correct. SI targets historically difficult courses and is open to all students — not just those struggling. This proactive approach sets SI apart.':'Correct. Redirecting keeps the session student-led. Your job is to facilitate learning, not deliver instruction.')
+    :(qid==='q1'?'Not quite. SI is proactive and open to all enrolled students — not just at-risk ones. The program targets difficult courses, not struggling students.':'Not quite. As an SI Leader, your default is to redirect content questions back to the group. This is what separates SI from tutoring.');
+  qa[qid]=correct;
+  if(qa.q1!==null&&qa.q2!==null) document.getElementById('btn2').disabled=false;
+}
+
+function checkSc(scid,btn,choice){
+  const c=document.getElementById(scid);
+  if(c.querySelector('.locked'))return;
+  c.querySelectorAll('.sc-btn').forEach(b=>b.classList.add('locked'));
+  const isC=choice===correct[scid];
+  btn.classList.add(isC?'correct':'wrong');
+  c.querySelectorAll('.sc-btn').forEach(b=>{
+    const v=b.getAttribute('onclick').match(/,'(\w+)'\)/)[1];
+    if(v===correct[scid]) b.classList.add('correct');
+  });
+  const fb=document.getElementById(`${scid}-fb`);
+  const d=scFb[scid][choice];
+  fb.className='feedback show '+(d.c?'correct':'wrong');
+  fb.textContent=d.m;
+  sa[scid]=d.c;
+  const answered=Object.values(sa).filter(x=>x!==null).length;
+  const prog=document.getElementById('sc-progress');
+  if(prog) prog.textContent=`${answered} of 6 answered`;
+  if(Object.values(sa).every(x=>x!==null)) document.getElementById('btn4').disabled=false;
+}
+
+function toggleTech(id){ document.getElementById(id).classList.toggle('open'); }
+
+function toggleCl(el){
+  el.classList.toggle('done');
+  el.querySelector('.cl-box').textContent=el.classList.contains('done')?'✓':'';
+  const done=document.querySelectorAll('.cl-item.done').length;
+  document.getElementById('cl-pct').textContent=`${done} of 6 completed`;
+}
+
+// saveR defined below with saved indicator
+
+
+
+const DAYS = ['Mon','Tue','Wed','Thu','Fri'];
+const slotData = {Mon:[],Tue:[],Wed:[],Thu:[],Fri:[]};
+
+function addSlot(day, val='') {
+  const container = document.getElementById('slots-'+day);
+  const idx = slotData[day].length;
+  slotData[day].push(val);
+  const item = document.createElement('div');
+  item.className = 'slot-item';
+  item.innerHTML = `<input class="slot-input" placeholder="e.g. 10–11 AM" value="${val}" oninput="updateSlot('${day}',${idx},this.value)"/><button class="slot-del" onclick="removeSlot('${day}',${idx},this.closest('.slot-item'))">×</button>`;
+  container.appendChild(item);
+  saveSchedule();
+}
+
+function updateSlot(day, idx, val) {
+  slotData[day][idx] = val;
+  saveSchedule();
+  updateSummary();
+}
+
+function removeSlot(day, idx, el) {
+  slotData[day][idx] = null;
+  el.remove();
+  saveSchedule();
+  updateSummary();
+}
+
+const conflictPairs = [['Monday','Wednesday'],['Wednesday','Monday'],['Tuesday','Thursday'],['Thursday','Tuesday']];
+
+function checkConflict() {
+  const d1 = document.getElementById('si-day1').value;
+  const d2 = document.getElementById('si-day2').value;
+  const cm = document.getElementById('conflict-msg');
+  const gm = document.getElementById('good-msg');
+  cm.style.display = 'none'; gm.style.display = 'none';
+  if (!d1 || !d2) return;
+  if (d1 === d2) {
+    cm.style.display='block'; cm.textContent='Both sessions are on the same day — students who cannot attend the first session will also miss the second.'; return;
+  }
+  const isConflict = conflictPairs.some(([a,b]) => a===d1 && b===d2);
+  if (isConflict) {
+    cm.style.display='block';
+    cm.textContent=`Heads up: ${d1} and ${d2} are a mirroring pair. Students whose schedule blocks ${d1} will almost always also be blocked on ${d2}. Consider choosing a different pairing — e.g. Monday + Thursday, or Tuesday + Friday.`;
+  } else {
+    gm.style.display='block';
+    gm.textContent=`Good pairing. ${d1} and ${d2} give students with different weekly schedules a real chance to attend one of your sessions.`;
+  }
+  updateSummary();
+}
+
+function updateSummary() {
+  const lpday = document.getElementById('sch-lpday').value;
+  const cohort = document.getElementById('sch-cohort').value;
+  const d1 = document.getElementById('si-day1').value;
+  const t1 = document.getElementById('si-time1').value;
+  const d2 = document.getElementById('si-day2').value;
+  const t2 = document.getElementById('si-time2').value;
+  const busy = DAYS.map(d => {
+    const slots = (slotData[d]||[]).filter(Boolean);
+    return slots.length ? `<strong>${d}:</strong> ${slots.join(', ')}` : null;
+  }).filter(Boolean);
+
+  let html = '';
+  if (lpday) html += `<div style="margin-bottom:6px">LP submission deadline: <strong>${lpday}</strong> each week</div>`;
+  if (cohort) html += `<div style="margin-bottom:6px">Cohort meeting: <strong>${cohort}</strong></div>`;
+  if (busy.length) html += `<div style="margin-bottom:6px">Existing commitments: ${busy.join(' · ')}</div>`;
+  if (d1 && t1) html += `<div style="margin-bottom:4px;color:#065F46">SI Session 1: <strong>${d1} ${t1}</strong></div>`;
+  if (d2 && t2) html += `<div style="color:#065F46">SI Session 2: <strong>${d2} ${t2}</strong></div>`;
+  if (!html) html = 'Complete the fields above to see your summary.';
+  document.getElementById('schedule-summary').innerHTML = html;
+}
+
+function saveSchedule() {
+  try {
+    const data = {
+      lpday: document.getElementById('sch-lpday').value,
+      cohort: document.getElementById('sch-cohort').value,
+      d1: document.getElementById('si-day1').value,
+      t1: document.getElementById('si-time1').value,
+      d2: document.getElementById('si-day2').value,
+      t2: document.getElementById('si-time2').value,
+      slots: slotData
+    };
+    localStorage.setItem('si26_schedule', JSON.stringify(data));
+  } catch(e) {}
+  updateSummary();
+}
+
+function loadSchedule() {
+  try {
+    const raw = localStorage.getItem('si26_schedule');
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.lpday) document.getElementById('sch-lpday').value = d.lpday;
+    if (d.cohort) document.getElementById('sch-cohort').value = d.cohort;
+    if (d.d1) document.getElementById('si-day1').value = d.d1;
+    if (d.t1) document.getElementById('si-time1').value = d.t1;
+    if (d.d2) document.getElementById('si-day2').value = d.d2;
+    if (d.t2) document.getElementById('si-time2').value = d.t2;
+    if (d.slots) {
+      DAYS.forEach(day => {
+        if (d.slots[day]) {
+          d.slots[day].forEach(v => { if(v) addSlot(day, v); });
+        }
+      });
+    }
+    checkConflict();
+    updateSummary();
+  } catch(e) {}
+}
+
+function setSubject(s){
+  document.getElementById('subj-bio').classList.toggle('active',s==='bio');
+  document.getElementById('subj-phys').classList.toggle('active',s==='phys');
+  try{localStorage.setItem('si26_b-subj',s);}catch(e){}
+}
+function setDur(d){
+  ['50','60','75'].forEach(v=>document.getElementById('dur-'+v).classList.remove('active'));
+  document.getElementById('dur-'+d).classList.add('active');
+  const mins={'50':{ice:5},'60':{ice:7},'75':{ice:8}};
+  const m=mins[d]||mins['50'];
+  document.getElementById('ice-min').textContent=m.ice+' min';
+  try{localStorage.setItem('si26_b-dur',d);}catch(e){}
+}
+function addPhase(){
+  const el=document.getElementById('seq3');
+  if(el){el.style.display='block';}
+  document.getElementById('add-phase-btn').style.display='none';
+}
+function saveB(){
+  try{
+    const ids=['b-title','b-obj','b-ice','b-s0','b-s0-title','b-s0-time','b-s1','b-s1-title','b-s1-time','b-s2','b-s2-title','b-s2-time','b-s3','b-s3-title','b-s3-time','b-t0','b-t1','b-t2'];
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)localStorage.setItem('si26_'+id,el.value);});
+    const msg=document.getElementById('b-saved-msg');
+    if(msg){msg.style.opacity='1';setTimeout(()=>msg.style.opacity='0',1400);}
+  }catch(e){}
+}
+try{
+  const ids=['b-title','b-obj','b-ice','b-s0','b-s0-title','b-s0-time','b-s1','b-s1-title','b-s1-time','b-s2','b-s2-title','b-s2-time','b-s3','b-s3-title','b-s3-time','b-t0','b-t1','b-t2'];
+  ids.forEach(id=>{const el=document.getElementById(id);const v=localStorage.getItem('si26_'+id);if(el&&v)el.value=v;});
+  const subj=localStorage.getItem('si26_b-subj');if(subj)setSubject(subj);
+  const dur=localStorage.getItem('si26_b-dur');if(dur)setDur(dur);
+}catch(e){}
+try{ ['r1','r2','r3'].forEach(id=>{ const v=localStorage.getItem('si26_'+id); if(v)document.getElementById(id).value=v; }); }catch(e){}
+
+function saveLp(){
+  try{
+    ['lp0','lp1','lp2','lp3'].forEach(id=>{const el=document.getElementById(id);if(el)localStorage.setItem('si26_'+id,el.value);});
+    const dot=document.getElementById('lp-dot');
+    if(dot){dot.style.opacity='1';setTimeout(()=>dot.style.opacity='0',1200);}
+  }catch(e){}
+}
+try{ ['lp0','lp1','lp2','lp3'].forEach(id=>{ const el=document.getElementById(id); const v=localStorage.getItem('si26_'+id); if(el&&v)el.value=v; }); }catch(e){}
+function saveAnn(){
+  try{
+    const ids=['ann-loc1','ann-time1','ann-topic1','ann-first','ann-loc2','ann-time2','ann-topic2','ann-weekly'];
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)localStorage.setItem('si26_'+id,el.value);});
+    const msg=document.getElementById('ann-saved');
+    if(msg){msg.style.opacity='1';setTimeout(()=>msg.style.opacity='0',1400);}
+  }catch(e){}
+}
+try{
+  ['ann-loc1','ann-time1','ann-topic1','ann-first','ann-loc2','ann-time2','ann-topic2','ann-weekly'].forEach(id=>{
+    const el=document.getElementById(id);const v=localStorage.getItem('si26_'+id);if(el&&v)el.value=v;
+  });
+}catch(e){}
+
+function saveProfEmail(){
+  try{
+    ['prof-name','prof-course','prof-email-addr','prof-email-body'].forEach(id=>{
+      const el=document.getElementById(id);if(el)localStorage.setItem('si26_'+id,el.value);
+    });
+    const msg=document.getElementById('prof-saved');
+    if(msg){msg.style.opacity='1';setTimeout(()=>msg.style.opacity='0',1400);}
+  }catch(e){}
+}
+try{
+  ['prof-name','prof-course','prof-email-addr','prof-email-body'].forEach(id=>{
+    const el=document.getElementById(id);const v=localStorage.getItem('si26_'+id);if(el&&v)el.value=v;
+  });
+}catch(e){}
+
+function populateSummary(){
+  const get=id=>{try{return localStorage.getItem('si26_'+id)||'';}catch(e){return '';}};
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val||'Not yet written.';};
+
+  // Schedule
+  try{
+    const raw=localStorage.getItem('si26_schedule');
+    if(raw){
+      const sch=JSON.parse(raw);
+      const lines=[];
+      if(sch.d1&&sch.t1) lines.push('Session 1: '+sch.d1+' '+sch.t1);
+      if(sch.d2&&sch.t2) lines.push('Session 2: '+sch.d2+' '+sch.t2);
+      if(sch.cohort) lines.push('Cohort meeting: '+sch.cohort);
+      if(sch.lpday) lines.push('LP due: '+sch.lpday+'s');
+      document.getElementById('summ-schedule-body').textContent=lines.length?lines.join('\n'):'Complete the Schedule slide to see this.';
+    }
+  }catch(e){}
+
+  // Reflections
+  set('summ-r1', get('r1'));
+  set('summ-r2', get('r2'));
+  set('summ-r3', get('r3'));
+
+  // Announcements
+  set('summ-ann-first', get('ann-first'));
+  set('summ-ann-weekly', get('ann-weekly'));
+
+  // Prof email
+  set('summ-prof-body', get('prof-email-body'));
+
+  // Lesson plan — title, obj, icebreaker, phases, troubleshooting
+  const ltel=document.getElementById('summ-lp-title');
+  if(ltel) ltel.textContent=get('b-title')||'No title yet.';
+  set('summ-lp-obj', get('b-obj'));
+  set('summ-lp-ice', get('b-ice'));
+
+  // Phases
+  [0,1,2].forEach(i=>{
+    const titleEl=document.getElementById('summ-s'+i+'-title');
+    const bodyEl=document.getElementById('summ-s'+i);
+    const t=get('b-s'+i+'-title'); const b=get('b-s'+i);
+    if(titleEl) titleEl.textContent = t ? t+(get('b-s'+i+'-time')?' ('+get('b-s'+i+'-time')+')':'') : '';
+    if(bodyEl) bodyEl.textContent = b||'';
+  });
+
+  set('summ-t0', get('b-t0'));
+  set('summ-t1', get('b-t1'));
+  set('summ-t2', get('b-t2'));
+}
+
+function sendSummary(){
+  const emailEl=document.getElementById('send-email');
+  const msgEl=document.getElementById('send-msg');
+  if(!emailEl||!emailEl.value.includes('@')){
+    msgEl.style.display='block';msgEl.style.color='#AE431E';
+    msgEl.textContent='Please enter a valid email address.';return;
+  }
+  // Build mailto with summary content
+  const get=id=>{try{return localStorage.getItem('si26_'+id)||'(not completed)';}catch(e){return '(not completed)';}};
+  let body='NEW SI LEADER TRAINING — YOUR SUMMARY\n\n';
+  try{
+    const raw=localStorage.getItem('si26_schedule');
+    if(raw){const s=JSON.parse(raw);
+      body+='SESSION SCHEDULE\n';
+      if(s.d1&&s.t1)body+='Session 1: '+s.d1+' '+s.t1+'\n';
+      if(s.d2&&s.t2)body+='Session 2: '+s.d2+' '+s.t2+'\n';
+      if(s.cohort)body+='Cohort meeting: '+s.cohort+'\n';
+      if(s.lpday)body+='LP due: '+s.lpday+'s\n';
+      body+='\n';
+    }
+  }catch(e){}
+  body+='FACILITATION REFLECTIONS\n';
+  body+='Most natural technique: '+get('r1')+'\n';
+  body+='Biggest challenge: '+get('r2')+'\n';
+  body+='One thing to do differently: '+get('r3')+'\n\n';
+  body+='FIRST CANVAS ANNOUNCEMENT\n'+get('ann-first')+'\n\n';
+  body+='WEEKLY CANVAS ANNOUNCEMENT\n'+get('ann-weekly')+'\n\n';
+  body+='PROFESSOR EMAIL\n'+get('prof-email-body')+'\n\n';
+  body+='LESSON PLAN: '+get('b-title')+'\n';
+  body+='OBJECTIVE: '+get('b-obj')+'\n';
+  body+='ICEBREAKER: '+get('b-ice')+'\n';
+  [0,1,2].forEach(i=>{
+    const t=get('b-s'+i+'-title'), tm=get('b-s'+i+'-time'), b=get('b-s'+i);
+    if(t||b) body+='Phase '+(i+1)+(t?' — '+t:'')+(tm?' ('+tm+')':'')+'\n'+(b||'')+'\n';
+  });
+  body+='\nTROUBLESHOOTING\nNo response: '+get('b-t0')+'\nAsked for answer: '+get('b-t1')+'\nRefuse groups: '+get('b-t2');
+
+  const mailto='mailto:'+emailEl.value
+    +'?subject='+encodeURIComponent('My SI Leader Training Summary')
+    +'&body='+encodeURIComponent(body);
+  window.location.href=mailto;
+  msgEl.style.display='block';msgEl.style.color='#8A8635';
+  msgEl.textContent='Your email client should open with your summary ready to send.';
+}
+
+// ── Slide 2: self-check ──────────────────────────────────────────
+function checkS2(btn, isCorrect) {
+  const container = document.getElementById('s2q');
+  if (container.querySelector('.locked')) return;
+  container.querySelectorAll('.sc2-opt').forEach(b => {
+    b.classList.add('locked');
+    b.style.cursor = 'default';
+  });
+  btn.classList.add(isCorrect ? 'opt-correct' : 'opt-wrong');
+  if (!isCorrect) {
+    container.querySelectorAll('.sc2-opt').forEach(b => {
+      if (b.getAttribute('onclick').includes('true')) b.classList.add('opt-correct');
+    });
+  }
+  const fb = document.getElementById('s2-fb');
+  fb.style.display = 'block';
+  if (isCorrect) {
+    fb.style.background = '#ECFDF5'; fb.style.color = '#065F46'; fb.style.borderLeft = '3px solid #059669';
+    fb.style.padding = '10px 14px'; fb.style.borderRadius = '8px';
+    fb.textContent = 'Correct. SI is defined by peer collaboration and student-led discovery — the leader facilitates, never instructs from the front.';
+  } else {
+    fb.style.background = '#FEF2F2'; fb.style.color = '#991B1B'; fb.style.borderLeft = '3px solid #DC2626';
+    fb.style.padding = '10px 14px'; fb.style.borderRadius = '8px';
+    fb.textContent = 'Not quite. Look at the highlighted answer — SI is fundamentally about students working through content together, with you as the guide, not the teacher.';
+  }
+  document.getElementById('s2-next').disabled = false;
+}
+
+// ── Slide 4: technique matching ─────────────────────────────────
+const matchCorrect = ['check', 'redirect', 'wait', 'check'];
+const matchFeedback = [
+  {correct:'Correct. Asking someone to explain in their own words is a classic Check for Understanding.',wrong:'Not quite — this is a Check for Understanding. You\'re verifying comprehension before moving on.'},
+  {correct:'Correct. Bouncing a question back to the group is textbook Redirecting — it keeps students as the knowledge source.',wrong:'Not quite — this is Redirecting. You\'re turning a student question back to the group.'},
+  {correct:'Correct. Counting to seven before anyone answers is Wait Time in action — uncomfortable silence that produces better responses.',wrong:'Not quite — this is Wait Time. The silence between your question and the first response is the technique itself.'},
+  {correct:'Correct. A thumbs up/sideways check is a fast, low-stakes Check for Understanding — it gives you a real-time read of the room.',wrong:'Not quite — this is a Check for Understanding. You\'re gauging comprehension across the whole group quickly.'}
+];
+let matchDone = 0;
+function checkMatch(idx, btn, choice) {
+  const container = document.getElementById('mi'+idx);
+  if (container.querySelector('.locked')) return;
+  container.querySelectorAll('.match-btn').forEach(b => b.classList.add('locked'));
+  const isC = choice === matchCorrect[idx];
+  btn.classList.add(isC ? 'm-correct' : 'm-wrong');
+  if (!isC) {
+    container.querySelectorAll('.match-btn').forEach(b => {
+      const v = b.getAttribute('onclick').match(/'(\w+)'\)$/)?.[1];
+      if (v === matchCorrect[idx]) b.classList.add('m-correct');
+    });
+  }
+  const fb = document.getElementById('mfb'+idx);
+  fb.className = 'match-fb show ' + (isC ? 'correct' : 'wrong');
+  fb.textContent = isC ? matchFeedback[idx].correct : matchFeedback[idx].wrong;
+  matchDone++;
+  document.getElementById('match-score').textContent = matchDone + ' of 4 matched';
+}
+
+// ── Slide 6: save reflections with indicator ─────────────────────
+function saveR(){
+  try{
+    ['r1','r2','r3'].forEach(id=>{ const el=document.getElementById(id); if(el) localStorage.setItem('si26_'+id,el.value); });
+    const msg=document.getElementById('r-saved');
+    if(msg){msg.style.opacity='1';setTimeout(()=>msg.style.opacity='0',1400);}
+  }catch(e){}
+}
+
+// ── Slide 13: sentence starters ─────────────────────────────────
+function appendStarter(targetId, chip) {
+  if (chip.classList.contains('used')) return;
+  chip.classList.add('used');
+  const ta = document.getElementById(targetId);
+  if (!ta) return;
+  const text = chip.textContent;
+  ta.value = ta.value ? ta.value + '\n' + text : text;
+  saveB();
+}
+
+// ── Slide 15: enhanced completion stats ─────────────────────────
+function updateStats(){
+  const qs=[qa.q1,qa.q2].filter(x=>x===true).length;
+  const ss=Object.values(sa).filter(x=>x===true).length;
+  const cs=document.querySelectorAll('.cl-item.done').length;
+  document.getElementById('stat-q').textContent=`${qs}/2`;
+  document.getElementById('stat-s').textContent=`${ss}/6`;
+  document.getElementById('stat-c').textContent=`${cs}/6`;
+  document.getElementById('stat-slides').textContent=`${cur+1}/${N}`;
+
+  // Completion percentage — based on 7 key deliverables
+  const get = id => { try { return localStorage.getItem('si26_'+id)||''; } catch(e) { return ''; } };
+  const checks = [
+    qa.q1!==null && qa.q2!==null,
+    Object.values(sa).every(x=>x!==null),
+    get('r1').length > 10,
+    (() => { try { const s=JSON.parse(localStorage.getItem('si26_schedule')||'{}'); return !!(s.d1&&s.t1); } catch(e){return false;} })(),
+    get('ann-first').length > 20,
+    get('prof-email-body').length > 50,
+    get('b-title').length > 3 && get('b-obj').length > 10
+  ];
+  const done = checks.filter(Boolean).length;
+  const pct = Math.round((done/checks.length)*100);
+  const badge = document.getElementById('badge-pct');
+  if(badge) badge.textContent = pct+'%';
+
+  // Completion checklist dots
+  const ids = ['cc-quiz','cc-sc','cc-reflect','cc-sched','cc-ann','cc-prof','cc-lp'];
+  ids.forEach((id,i) => {
+    const el = document.getElementById(id);
+    if(el) el.classList.toggle('done', checks[i]);
+  });
+}
+
+loadSchedule();
+buildDots();
+updateSidenav();
+</script>
+</body>
+</html>
